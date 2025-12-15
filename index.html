@@ -178,18 +178,9 @@
         .cursor-pointer { cursor: pointer; }
 
         /* Comparison Slider Styles */
-        .comparison-container input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 100%;
-            background: transparent;
-            cursor: ew-resize;
-        }
-        .comparison-container input[type=range]::-moz-range-thumb {
-            width: 20px;
-            height: 100%;
-            background: transparent;
+        .comparison-container {
+            /* Enables vertical scrolling on the page but allows JS to capture horizontal swipes */
+            touch-action: pan-y;
             cursor: ew-resize;
         }
     </style>
@@ -331,21 +322,20 @@
                         <!-- Stump Comparison -->
                         <div class="bg-white p-4 rounded-xl shadow-md">
                             <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">Stump Grinding</h3>
-                            <div class="comparison-container relative w-full aspect-[4/3] rounded-lg overflow-hidden group select-none cursor-ew-resize">
+                            <div class="comparison-container relative w-full aspect-[4/3] rounded-lg overflow-hidden group select-none">
                                 <!-- After (Bottom Layer) -->
-                                <div class="absolute inset-0">
+                                <div class="absolute inset-0 pointer-events-none">
                                     <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/v1765839348/after_stump_sforuz.jpg" class="w-full h-full object-cover" alt="After Stump Grinding">
-                                    <span class="absolute top-4 right-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded pointer-events-none z-10">AFTER</span>
+                                    <span class="absolute top-4 right-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded z-10">AFTER</span>
                                 </div>
 
                                 <!-- Before (Top Layer - Clipped) -->
-                                <div class="img-top absolute inset-0 z-20" style="clip-path: inset(0 50% 0 0);">
+                                <div class="img-top absolute inset-0 z-20 pointer-events-none" style="clip-path: inset(0 50% 0 0);">
                                     <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/v1765839348/before_stump_iky3lh.jpg" class="w-full h-full object-cover" alt="Before Stump Grinding">
-                                    <span class="absolute top-4 left-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded pointer-events-none z-10">BEFORE</span>
+                                    <span class="absolute top-4 left-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded z-10">BEFORE</span>
                                 </div>
 
-                                <!-- Controls -->
-                                <input type="range" min="0" max="100" value="50" class="slider-control absolute top-0 left-0 w-full h-full opacity-0 z-40 cursor-ew-resize m-0 p-0">
+                                <!-- Visible Handle -->
                                 <div class="slider-handle absolute top-0 bottom-0 w-1 bg-white z-30 pointer-events-none shadow-lg" style="left: 50%;">
                                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
                                         <i data-lucide="chevrons-left-right" class="w-4 h-4 text-green-600"></i>
@@ -357,20 +347,19 @@
                         <!-- Path Clearing Comparison -->
                         <div class="bg-white p-4 rounded-xl shadow-md">
                             <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">Path Clearing</h3>
-                             <div class="comparison-container relative w-full aspect-[4/3] rounded-lg overflow-hidden group select-none cursor-ew-resize">
+                             <div class="comparison-container relative w-full aspect-[4/3] rounded-lg overflow-hidden group select-none">
                                 <!-- After (Bottom Layer) -->
-                                <div class="absolute inset-0">
+                                <div class="absolute inset-0 pointer-events-none">
                                     <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/v1765839349/after_path_ywwifz.jpg" class="w-full h-full object-cover" alt="After Path Clearing">
-                                    <span class="absolute top-4 right-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded pointer-events-none z-10">AFTER</span>
+                                    <span class="absolute top-4 right-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded z-10">AFTER</span>
                                 </div>
 
                                 <!-- Before (Top Layer - Clipped) -->
-                                <div class="img-top absolute inset-0 z-20" style="clip-path: inset(0 50% 0 0);">
+                                <div class="img-top absolute inset-0 z-20 pointer-events-none" style="clip-path: inset(0 50% 0 0);">
                                     <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/v1765839348/before_path_sjs8kz.jpg" class="w-full h-full object-cover" alt="Before Path Clearing">
-                                    <span class="absolute top-4 left-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded pointer-events-none z-10">BEFORE</span>
+                                    <span class="absolute top-4 left-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded z-10">BEFORE</span>
                                 </div>
 
-                                <input type="range" min="0" max="100" value="50" class="slider-control absolute top-0 left-0 w-full h-full opacity-0 z-40 cursor-ew-resize m-0 p-0">
                                 <div class="slider-handle absolute top-0 bottom-0 w-1 bg-white z-30 pointer-events-none shadow-lg" style="left: 50%;">
                                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
                                         <i data-lucide="chevrons-left-right" class="w-4 h-4 text-green-600"></i>
@@ -382,20 +371,19 @@
                         <!-- Yard Clearing Comparison -->
                         <div class="bg-white p-4 rounded-xl shadow-md">
                             <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">Yard Clearing</h3>
-                             <div class="comparison-container relative w-full aspect-[4/3] rounded-lg overflow-hidden group select-none cursor-ew-resize">
+                             <div class="comparison-container relative w-full aspect-[4/3] rounded-lg overflow-hidden group select-none">
                                 <!-- After (Bottom Layer) -->
-                                <div class="absolute inset-0">
+                                <div class="absolute inset-0 pointer-events-none">
                                     <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/v1765839348/after_yard_e7kmp2.jpg" class="w-full h-full object-cover" alt="After Yard Clearing">
-                                    <span class="absolute top-4 right-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded pointer-events-none z-10">AFTER</span>
+                                    <span class="absolute top-4 right-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded z-10">AFTER</span>
                                 </div>
 
                                 <!-- Before (Top Layer - Clipped) -->
-                                <div class="img-top absolute inset-0 z-20" style="clip-path: inset(0 50% 0 0);">
+                                <div class="img-top absolute inset-0 z-20 pointer-events-none" style="clip-path: inset(0 50% 0 0);">
                                     <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/v1765839348/before_yard_urjt20.jpg" class="w-full h-full object-cover" alt="Before Yard Clearing">
-                                    <span class="absolute top-4 left-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded pointer-events-none z-10">BEFORE</span>
+                                    <span class="absolute top-4 left-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded z-10">BEFORE</span>
                                 </div>
 
-                                <input type="range" min="0" max="100" value="50" class="slider-control absolute top-0 left-0 w-full h-full opacity-0 z-40 cursor-ew-resize m-0 p-0">
                                 <div class="slider-handle absolute top-0 bottom-0 w-1 bg-white z-30 pointer-events-none shadow-lg" style="left: 50%;">
                                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
                                         <i data-lucide="chevrons-left-right" class="w-4 h-4 text-green-600"></i>
@@ -719,21 +707,57 @@
                 switchPage(page, false); // false means don't push state again
             }
 
-            // Initialize Comparison Sliders
+            // Initialize Comparison Sliders (MOBILE FRIENDLY SWIPING)
             document.querySelectorAll('.comparison-container').forEach(container => {
-                const slider = container.querySelector('.slider-control');
                 const overlay = container.querySelector('.img-top');
                 const handle = container.querySelector('.slider-handle');
+                let active = false;
 
-                if (slider && overlay && handle) {
-                    slider.addEventListener('input', (e) => {
-                        const val = e.target.value;
-                        // Use inset clip-path to reveal/hide the top image
-                        // inset(top right bottom left) -> we only change right percentage
+                // Helper to update slider position
+                const updateSlider = (x) => {
+                    const rect = container.getBoundingClientRect();
+                    // Calculate percentage (0 to 100)
+                    let val = ((x - rect.left) / rect.width) * 100;
+                    // Clamp value
+                    val = Math.max(0, Math.min(100, val));
+                    
+                    if (overlay && handle) {
                         overlay.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
                         handle.style.left = `${val}%`;
-                    });
-                }
+                    }
+                };
+
+                // Mouse Events (Desktop)
+                container.addEventListener('mousedown', (e) => {
+                    active = true;
+                    updateSlider(e.clientX);
+                });
+                
+                window.addEventListener('mousemove', (e) => {
+                    if (!active) return;
+                    updateSlider(e.clientX);
+                });
+
+                window.addEventListener('mouseup', () => {
+                    active = false;
+                });
+
+                // Touch Events (Mobile)
+                container.addEventListener('touchstart', (e) => {
+                    active = true;
+                    updateSlider(e.touches[0].clientX);
+                }, { passive: true });
+
+                container.addEventListener('touchmove', (e) => {
+                    if (!active) return;
+                    // Note: We are NOT using preventDefault() to allow vertical scrolling
+                    // CSS 'touch-action: pan-y' handles the scroll blocking horizontally
+                    updateSlider(e.touches[0].clientX);
+                }, { passive: true });
+
+                container.addEventListener('touchend', () => {
+                    active = false;
+                });
             });
         });
 
