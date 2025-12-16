@@ -212,7 +212,11 @@
                     <button onclick="switchPage('contact')" class="bg-green-600 text-white px-5 py-2.5 rounded-md font-bold text-sm hover:bg-green-700 transition shadow-lg uppercase">Contact</button>
                 </div>
 
-                <div class="flex items-center lg:hidden">
+                <!-- Mobile Menu Button & Sticky Contact -->
+                <div class="flex items-center gap-3 lg:hidden">
+                    <button onclick="switchPage('contact')" class="bg-green-600 text-white px-4 py-2 rounded-md font-bold text-xs uppercase tracking-wide hover:bg-green-700 transition shadow-md">
+                        Contact
+                    </button>
                     <button id="mobile-menu-btn" class="text-gray-700 hover:text-green-600 focus:outline-none p-2" aria-label="Open Menu">
                         <i data-lucide="menu" class="h-8 w-8"></i>
                     </button>
@@ -341,6 +345,9 @@
                                         <i data-lucide="chevrons-left-right" class="w-4 h-4 text-green-600"></i>
                                     </div>
                                 </div>
+                                
+                                <!-- Touch/Mouse Overlay for Events -->
+                                <div class="slider-overlay absolute inset-0 z-40 w-full h-full cursor-ew-resize"></div>
                             </div>
                         </div>
 
@@ -365,6 +372,7 @@
                                         <i data-lucide="chevrons-left-right" class="w-4 h-4 text-green-600"></i>
                                     </div>
                                 </div>
+                                <div class="slider-overlay absolute inset-0 z-40 w-full h-full cursor-ew-resize"></div>
                             </div>
                         </div>
 
@@ -389,6 +397,7 @@
                                         <i data-lucide="chevrons-left-right" class="w-4 h-4 text-green-600"></i>
                                     </div>
                                 </div>
+                                <div class="slider-overlay absolute inset-0 z-40 w-full h-full cursor-ew-resize"></div>
                             </div>
                         </div>
 
@@ -419,7 +428,7 @@
                             Based in Clermont, FL, we service Central Florida and surrounding areas with professional outdoor services. Whether you need a site cleared for development or a stump removed from your front yard, we have the specialized machinery to get the job done efficiently.
                         </p>
                         <ul class="space-y-3 text-lg font-medium">
-                            <li class="flex items-center"><i data-lucide="check-circle" class="text-green-600 mr-3 w-6 h-6"></i> Servicing Clermont, Groveland & Minneola</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="text-green-600 mr-3 w-6 h-6"></i> Servicing Central Florida</li>
                             <li class="flex items-center"><i data-lucide="check-circle" class="text-green-600 mr-3 w-6 h-6"></i> Residential & Commercial Services</li>
                             <li class="flex items-center"><i data-lucide="check-circle" class="text-green-600 mr-3 w-6 h-6"></i> Specialized Equipment for Quick Results</li>
                         </ul>
@@ -512,21 +521,18 @@
                             <h3 class="text-2xl font-bold mb-6 text-amber-900">Our Products & Services</h3>
                             <ul class="space-y-4">
                                 <li class="flex items-center border-b border-gray-100 pb-3">
-                                    <span class="text-3xl mr-4">🍯</span>
                                     <div>
                                         <strong class="block text-gray-900 text-lg">Raw Honey</strong>
                                         <span class="text-gray-600 text-base">Unfiltered and unprocessed, retaining all natural benefits.</span>
                                     </div>
                                 </li>
                                 <li class="flex items-center border-b border-gray-100 pb-3">
-                                    <span class="text-3xl mr-4">🕯</span>
                                     <div>
                                         <strong class="block text-gray-900 text-lg">Beeswax Products</strong>
                                         <span class="text-gray-600 text-base">Candles, lip balms, and more made from natural beeswax.</span>
                                     </div>
                                 </li>
                                 <li class="flex items-center border-b border-gray-100 pb-3">
-                                    <span class="text-3xl mr-4">🌱</span>
                                     <div>
                                         <strong class="block text-gray-900 text-lg">Pollination Services</strong>
                                         <span class="text-gray-600 text-base">Helping local farmers improve crop yield.</span>
@@ -583,7 +589,7 @@
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-gray-900 text-lg">Service Area</h4>
-                                    <p class="text-gray-600 text-base">Clermont, Minneola, Groveland & Winter Garden.</p>
+                                    <p class="text-gray-600 text-base">Clermont, Minneola, Groveland, Montverde, Winter Garden, Oakland, Orlando & Central Florida.</p>
                                 </div>
                             </div>
                             
@@ -610,13 +616,7 @@
                     </div>
 
                     <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-                        <!-- UPDATED: Netlify Form Attributes -->
-                        <!-- 1. name="contact": Identifies the form in Netlify UI -->
-                        <!-- 2. method="POST": Required for submission -->
-                        <!-- 3. data-netlify="true": Tells Netlify to handle this form -->
-                        <form name="contact" method="POST" data-netlify="true">
-                            
-                            <!-- HIDDEN INPUT: Required for Netlify to route the form correctly -->
+                        <form id="contact-form" name="contact" method="POST" data-netlify="true">
                             <input type="hidden" name="form-name" value="contact" />
 
                             <div class="mb-5">
@@ -646,6 +646,11 @@
 
                             <button type="submit" class="w-full bg-green-600 text-white font-bold py-3.5 rounded-lg hover:bg-green-700 transition shadow-lg text-lg uppercase tracking-wider">Send Message</button>
                         </form>
+                        <div id="form-success" class="hidden text-center py-10">
+                            <i data-lucide="check-circle" class="w-16 h-16 text-green-600 mx-auto mb-4"></i>
+                            <h3 class="text-2xl font-bold text-gray-900">Message Sent!</h3>
+                            <p class="text-gray-600 mt-2">Thanks for reaching out. We'll get back to you shortly.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -711,8 +716,8 @@
             document.querySelectorAll('.comparison-container').forEach(container => {
                 const overlay = container.querySelector('.img-top');
                 const handle = container.querySelector('.slider-handle');
-                let active = false;
-
+                const sliderInput = container.querySelector('.slider-control'); // Fallback for desktop drag
+                
                 // Helper to update slider position
                 const updateSlider = (x) => {
                     const rect = container.getBoundingClientRect();
@@ -727,39 +732,84 @@
                     }
                 };
 
-                // Mouse Events (Desktop)
+                // 1. Mouse Events (Desktop Click & Drag)
+                let isDragging = false;
+                
                 container.addEventListener('mousedown', (e) => {
-                    active = true;
+                    isDragging = true;
                     updateSlider(e.clientX);
                 });
                 
                 window.addEventListener('mousemove', (e) => {
-                    if (!active) return;
+                    if (!isDragging) return;
                     updateSlider(e.clientX);
                 });
 
                 window.addEventListener('mouseup', () => {
-                    active = false;
+                    isDragging = false;
                 });
 
-                // Touch Events (Mobile)
-                container.addEventListener('touchstart', (e) => {
-                    active = true;
-                    updateSlider(e.touches[0].clientX);
-                }, { passive: true });
+                // 2. Touch Events (Mobile Swiping)
+                // Use the overlay to catch touch events
+                const touchZone = container.querySelector('.slider-overlay');
+                
+                if (touchZone) {
+                    touchZone.addEventListener('touchstart', (e) => {
+                        isDragging = true;
+                        // Get the first touch point
+                        const touch = e.touches[0];
+                        updateSlider(touch.clientX);
+                    }, { passive: true });
 
-                container.addEventListener('touchmove', (e) => {
-                    if (!active) return;
-                    // Note: We are NOT using preventDefault() to allow vertical scrolling
-                    // CSS 'touch-action: pan-y' handles the scroll blocking horizontally
-                    updateSlider(e.touches[0].clientX);
-                }, { passive: true });
+                    touchZone.addEventListener('touchmove', (e) => {
+                        if (!isDragging) return;
+                        const touch = e.touches[0];
+                        updateSlider(touch.clientX);
+                    }, { passive: true });
 
-                container.addEventListener('touchend', () => {
-                    active = false;
-                });
+                    touchZone.addEventListener('touchend', () => {
+                        isDragging = false;
+                    });
+                }
+                
+                // Optional: Sync input range if it exists (for accessibility)
+                if (sliderInput) {
+                    sliderInput.addEventListener('input', (e) => {
+                        const val = e.target.value;
+                        overlay.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+                        handle.style.left = `${val}%`;
+                    });
+                }
             });
         });
+
+        // Handle Netlify Form Submission via AJAX
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const formData = new FormData(contactForm);
+                
+                fetch('/', {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams(formData).toString()
+                })
+                .then(() => {
+                    // Success!
+                    contactForm.style.display = 'none';
+                    const successMsg = document.getElementById('form-success');
+                    successMsg.classList.remove('hidden');
+                    // Re-init icons for the checkmark
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                })
+                .catch((error) => {
+                    alert('Submission failed. Please try again later.');
+                    console.error(error);
+                });
+            });
+        }
 
         // Toggle Mobile Menu
         const btn = document.getElementById('mobile-menu-btn');
