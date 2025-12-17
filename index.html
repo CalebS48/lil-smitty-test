@@ -56,7 +56,9 @@
 
         .page-section {
             display: none;
-            animation: fadeIn 0.4s ease-in-out;
+            /* Composited fade in for page switch (Opacity + Transform) */
+            animation: fadeIn 0.4s ease-in-out; 
+            will-change: opacity, transform;
         }
         
         .page-section.active {
@@ -114,7 +116,7 @@
             cursor: pointer;
             z-index: 2001;
             opacity: 0.8;
-            transition: opacity 0.2s;
+            transition: opacity 0.2s; /* Opacity is safe to animate */
         }
         #lightbox-close:hover { opacity: 1; }
         
@@ -138,28 +140,31 @@
                         </div>
                         <div class="flex flex-col justify-center">
                             <span class="font-bold text-xl md:text-2xl tracking-tight text-gray-900 leading-none whitespace-nowrap">LIL SMITTY'S</span>
-                            <!-- ACCESSIBILITY: Upgraded to green-800 -->
                             <span class="font-bold text-sm md:text-base tracking-widest text-green-800 leading-none uppercase">Services, LLC</span>
                         </div>
                     </div>
                 </div>
                 
                 <div class="hidden lg:flex items-center space-x-6 xl:space-x-8">
-                    <!-- ACCESSIBILITY: Upgraded hover states to green-800 -->
-                    <button onclick="switchPage('home')" class="nav-btn text-base font-semibold text-gray-700 hover:text-green-800 uppercase tracking-wide transition">Home</button>
-                    <button onclick="switchPage('about')" class="nav-btn text-base font-semibold text-gray-700 hover:text-green-800 uppercase tracking-wide transition">About</button>
-                    <button onclick="switchPage('stumps')" class="nav-btn text-base font-bold text-green-800 hover:text-green-900 uppercase tracking-wide transition border-b-2 border-transparent hover:border-green-800">Stump Grinding</button>
-                    <button onclick="switchPage('clearing')" class="nav-btn text-base font-semibold text-gray-700 hover:text-green-800 uppercase tracking-wide transition">Land Clearing</button>
-                    <button onclick="switchPage('bees')" class="nav-btn text-base font-semibold text-gray-700 hover:text-amber-600 uppercase tracking-wide transition">Beez</button>
-                    <button onclick="switchPage('gallery')" class="nav-btn text-base font-semibold text-gray-700 hover:text-green-800 uppercase tracking-wide transition">Gallery</button>
-                    <!-- ACCESSIBILITY: Upgraded buttons to bg-green-800 -->
-                    <button onclick="switchPage('contact')" class="bg-green-800 text-white px-5 py-2.5 rounded-md font-bold text-sm hover:bg-green-900 transition shadow-lg uppercase">Contact</button>
+                    <button onclick="switchPage('home')" class="nav-btn text-base font-semibold text-gray-700 hover:text-green-800 uppercase tracking-wide">Home</button>
+                    <button onclick="switchPage('about')" class="nav-btn text-base font-semibold text-gray-700 hover:text-green-800 uppercase tracking-wide">About</button>
+                    <button onclick="switchPage('stumps')" class="nav-btn text-base font-bold text-green-800 hover:text-green-900 uppercase tracking-wide border-b-2 border-transparent hover:border-green-800">Stump Grinding</button>
+                    <button onclick="switchPage('clearing')" class="nav-btn text-base font-semibold text-gray-700 hover:text-green-800 uppercase tracking-wide">Land Clearing</button>
+                    <button onclick="switchPage('bees')" class="nav-btn text-base font-semibold text-gray-700 hover:text-amber-600 uppercase tracking-wide">Beez</button>
+                    <button onclick="switchPage('gallery')" class="nav-btn text-base font-semibold text-gray-700 hover:text-green-800 uppercase tracking-wide">Gallery</button>
+                    
+                    <button onclick="switchPage('contact')" class="relative group overflow-hidden bg-green-800 text-white px-5 py-2.5 rounded-md font-bold text-sm shadow-lg uppercase">
+                        <span class="relative z-10">Contact</span>
+                        <div class="absolute inset-0 bg-green-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
+                    </button>
                 </div>
 
                 <div class="flex items-center gap-3 lg:hidden">
-                    <button onclick="switchPage('contact')" class="bg-green-800 text-white px-4 py-2 rounded-md font-bold text-xs uppercase tracking-wide hover:bg-green-900 transition shadow-md">
-                        Contact
+                    <button onclick="switchPage('contact')" class="relative group overflow-hidden bg-green-800 text-white px-4 py-2 rounded-md font-bold text-xs uppercase tracking-wide shadow-md">
+                        <span class="relative z-10">Contact</span>
+                        <div class="absolute inset-0 bg-green-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
                     </button>
+                    
                     <button id="mobile-menu-btn" class="text-gray-700 hover:text-green-800 focus:outline-none p-2" aria-label="Open Menu">
                         <i data-lucide="menu" class="h-8 w-8"></i>
                     </button>
@@ -186,19 +191,20 @@
             <section class="hero-bg min-h-[600px] flex items-center justify-center text-center px-4 relative">
                 <div class="max-w-5xl mx-auto pt-20">
                     <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-wide drop-shadow-md">
-                        <!-- ACCESSIBILITY: Upgraded to green-300 for better contrast on dark bg -->
                         EXPERT <span class="text-green-300">STUMP GRINDING</span> <br>& LAND CLEARING
                     </h1>
                     <p class="text-xl md:text-2xl text-gray-100 mb-8 max-w-3xl mx-auto font-light leading-relaxed">
                         Professional site assessment, vegetation removal, and specialized machinery for residential and commercial needs in Clermont and Central Florida.
                     </p>
                     <div class="flex flex-col sm:flex-row justify-center gap-4">
-                        <!-- ACCESSIBILITY: Upgraded buttons to bg-green-800 -->
-                        <button onclick="switchPage('contact')" class="bg-green-800 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-green-700 transition shadow-xl border-b-4 border-green-950 hover:border-green-800">
-                            Get a Stump Quote
+                        <button onclick="switchPage('contact')" class="relative group overflow-hidden bg-green-800 text-white px-8 py-3 rounded-lg font-bold text-lg shadow-xl border-b-4 border-green-950">
+                            <span class="relative z-10">Get a Stump Quote</span>
+                            <div class="absolute inset-0 bg-green-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
                         </button>
-                        <button onclick="document.getElementById('services-section').scrollIntoView({behavior: 'smooth'})" class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-white hover:text-green-900 transition">
-                            View Services
+                        
+                        <button onclick="document.getElementById('services-section').scrollIntoView({behavior: 'smooth'})" class="relative group overflow-hidden bg-transparent border-2 border-white text-white hover:text-green-900 px-8 py-3 rounded-lg font-bold text-lg transition-colors duration-0">
+                            <span class="relative z-10">View Services</span>
+                            <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
                         </button>
                     </div>
                 </div>
@@ -222,43 +228,57 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="bg-gray-50 rounded-xl shadow-lg p-6 border-t-4 border-green-800 hover:shadow-xl transition group cursor-pointer" onclick="switchPage('stumps')">
-                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-800">
-                                <i data-lucide="axe" class="h-6 w-6"></i>
+                        <div class="relative bg-gray-50 rounded-xl p-0 border-t-4 border-green-800 group cursor-pointer" onclick="switchPage('stumps')">
+                            <div class="absolute inset-0 rounded-xl shadow-lg pointer-events-none"></div>
+                            <div class="absolute inset-0 rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none"></div>
+                            
+                            <div class="relative z-10 p-6">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-800">
+                                    <i data-lucide="axe" class="h-6 w-6"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-green-800">Stump Grinding</h3>
+                                <p class="text-gray-600 mb-4 leading-relaxed">Complete removal of stumps and roots using precision machinery. We handle stumps of all sizes.</p>
+                                <button class="text-green-800 font-bold uppercase text-sm tracking-wide group-hover:text-green-900 flex items-center">
+                                    View Details <i data-lucide="arrow-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                                </button>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-green-800 transition">Stump Grinding</h3>
-                            <p class="text-gray-600 mb-4 leading-relaxed">Complete removal of stumps and roots using precision machinery. We handle stumps of all sizes.</p>
-                            <button class="text-green-800 font-bold uppercase text-sm tracking-wide group-hover:text-green-900 flex items-center">
-                                View Details <i data-lucide="arrow-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
-                            </button>
                         </div>
 
-                        <div class="bg-gray-50 rounded-xl shadow-lg p-6 border-t-4 border-green-800 hover:shadow-xl transition group cursor-pointer" onclick="switchPage('clearing')">
-                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-800">
-                                <i data-lucide="tractor" class="h-6 w-6"></i>
+                        <div class="relative bg-gray-50 rounded-xl p-0 border-t-4 border-green-800 group cursor-pointer" onclick="switchPage('clearing')">
+                             <div class="absolute inset-0 rounded-xl shadow-lg pointer-events-none"></div>
+                            <div class="absolute inset-0 rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none"></div>
+                            
+                            <div class="relative z-10 p-6">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-800">
+                                    <i data-lucide="tractor" class="h-6 w-6"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-green-800">Land Clearing</h3>
+                                <p class="text-gray-600 mb-4 leading-relaxed">Comprehensive site preparation removing trees, rocks, and debris. Get your lot ready for building.</p>
+                                 <button class="text-green-800 font-bold uppercase text-sm tracking-wide group-hover:text-green-900 flex items-center">
+                                    View Details <i data-lucide="arrow-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                                </button>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-green-800 transition">Land Clearing</h3>
-                            <p class="text-gray-600 mb-4 leading-relaxed">Comprehensive site preparation removing trees, rocks, and debris. Get your lot ready for building.</p>
-                             <button class="text-green-800 font-bold uppercase text-sm tracking-wide group-hover:text-green-900 flex items-center">
-                                View Details <i data-lucide="arrow-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
-                            </button>
                         </div>
 
-                        <div class="bg-amber-50 rounded-xl shadow-lg p-6 border-t-4 border-amber-400 hover:shadow-xl transition group cursor-pointer" onclick="switchPage('bees')">
-                             <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mb-4 text-amber-600">
-                                <i data-lucide="hexagon" class="h-6 w-6"></i>
+                        <div class="relative bg-amber-50 rounded-xl p-0 border-t-4 border-amber-400 group cursor-pointer" onclick="switchPage('bees')">
+                             <div class="absolute inset-0 rounded-xl shadow-lg pointer-events-none"></div>
+                             <div class="absolute inset-0 rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none"></div>
+
+                             <div class="relative z-10 p-6">
+                                 <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mb-4 text-amber-600">
+                                    <i data-lucide="hexagon" class="h-6 w-6"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-amber-800">Smitty's Beez</h3>
+                                <p class="text-gray-600 mb-4 leading-relaxed">Pure, raw local honey and beeswax products. Sustainable & delicious. From our hives to your home.</p>
+                                 <button class="text-amber-800 font-bold uppercase text-sm tracking-wide group-hover:text-amber-900 flex items-center">
+                                    Visit Apiary <i data-lucide="arrow-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                                </button>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-amber-800 transition">Smitty's Beez</h3>
-                            <p class="text-gray-600 mb-4 leading-relaxed">Pure, raw local honey and beeswax products. Sustainable & delicious. From our hives to your home.</p>
-                             <button class="text-amber-800 font-bold uppercase text-sm tracking-wide group-hover:text-amber-900 flex items-center">
-                                Visit Apiary <i data-lucide="arrow-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
-                            </button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Before and After Comparison Section -->
             <section class="py-16 bg-gray-50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-10">
@@ -268,7 +288,6 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <!-- Stump Comparison -->
                         <div class="bg-white p-4 rounded-xl shadow-md">
                             <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">Stump Grinding</h3>
                             <div class="comparison-container relative w-full aspect-[4/3] rounded-lg overflow-hidden group select-none">
@@ -288,7 +307,6 @@
                             </div>
                         </div>
 
-                        <!-- Path Clearing Comparison -->
                         <div class="bg-white p-4 rounded-xl shadow-md">
                             <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">Path Clearing</h3>
                              <div class="comparison-container relative w-full aspect-[4/3] rounded-lg overflow-hidden group select-none">
@@ -308,7 +326,6 @@
                             </div>
                         </div>
 
-                        <!-- Yard Clearing Comparison -->
                         <div class="bg-white p-4 rounded-xl shadow-md">
                             <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">Yard Clearing</h3>
                              <div class="comparison-container relative w-full aspect-[4/3] rounded-lg overflow-hidden group select-none">
@@ -339,9 +356,12 @@
                         <p class="text-gray-300 text-lg">Building the outdoor lifestyle you deserve with professionalism.</p>
                     </div>
                     <div class="flex gap-4">
-                        <button onclick="switchPage('about')" class="bg-transparent border border-white px-6 py-2.5 rounded-lg font-bold text-base hover:bg-white hover:text-gray-900 transition">More Info</button>
-                        <!-- ACCESSIBILITY: Upgraded button -->
-                        <button onclick="switchPage('contact')" class="bg-green-800 border border-green-800 px-6 py-2.5 rounded-lg font-bold text-base hover:bg-green-900 hover:border-green-900 transition">Get a Quote</button>
+                        <button onclick="switchPage('about')" class="bg-transparent border border-white px-6 py-2.5 rounded-lg font-bold text-base hover:bg-white hover:text-gray-900">More Info</button>
+                        
+                        <button onclick="switchPage('contact')" class="relative group overflow-hidden bg-green-800 border border-green-800 px-6 py-2.5 rounded-lg font-bold text-base text-white">
+                             <span class="relative z-10">Get a Quote</span>
+                             <div class="absolute inset-0 bg-green-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
+                        </button>
                     </div>
                 </div>
             </section>
@@ -361,7 +381,10 @@
                             <li class="flex items-center"><i data-lucide="check-circle" class="text-green-800 mr-3 w-6 h-6"></i> Specialized Equipment for Quick Results</li>
                         </ul>
                         <div class="mt-8">
-                            <button onclick="switchPage('contact')" class="bg-gray-900 text-white px-6 py-3 rounded-lg font-bold hover:bg-gray-800 text-base">Contact Us</button>
+                            <button onclick="switchPage('contact')" class="relative group overflow-hidden bg-gray-900 text-white px-6 py-3 rounded-lg font-bold text-base shadow-lg">
+                                <span class="relative z-10">Contact Us</span>
+                                <div class="absolute inset-0 bg-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
+                            </button>
                         </div>
                     </div>
                     <div class="img-container rounded-xl shadow-xl w-full aspect-[4/3] md:aspect-video">
@@ -393,8 +416,10 @@
                             <li class="flex items-center"><i data-lucide="check" class="text-green-800 mr-3 w-5 h-5"></i> Underbrush Mowing</li>
                             <li class="flex items-center"><i data-lucide="check" class="text-green-800 mr-3 w-5 h-5"></i> Clean & Safe Site</li>
                         </ul>
-                        <!-- ACCESSIBILITY: Upgraded button -->
-                        <button onclick="switchPage('contact')" class="w-full md:w-auto bg-green-800 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-900 shadow-lg text-base uppercase tracking-wider">Request Free Estimate</button>
+                         <button onclick="switchPage('contact')" class="w-full md:w-auto relative group overflow-hidden bg-green-800 text-white px-8 py-3 rounded-lg font-bold shadow-lg text-base uppercase tracking-wider">
+                            <span class="relative z-10">Request Free Estimate</span>
+                            <div class="absolute inset-0 bg-green-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -544,7 +569,6 @@
                                     <i data-lucide="map-pin" class="h-6 w-6"></i>
                                 </div>
                                 <div>
-                                    <!-- ACCESSIBILITY: Ensure correct hierarchy h3 -->
                                     <h3 class="font-bold text-gray-900 text-lg">Service Area</h3>
                                     <p class="text-gray-600 text-base">Clermont, Minneola, Groveland & Winter Garden.</p>
                                 </div>
@@ -555,7 +579,6 @@
                                     <i data-lucide="phone" class="h-6 w-6"></i>
                                 </div>
                                 <div>
-                                    <!-- ACCESSIBILITY: Ensure correct hierarchy h3 -->
                                     <h3 class="font-bold text-gray-900 text-lg">Phone</h3>
                                     <p class="text-gray-600 text-lg"><a href="tel:3529884401" class="hover:text-green-800">+1 (352) 988-4401</a></p>
                                 </div>
@@ -566,7 +589,6 @@
                                     <i data-lucide="mail" class="h-6 w-6"></i>
                                 </div>
                                 <div>
-                                    <!-- ACCESSIBILITY: Ensure correct hierarchy h3 -->
                                     <h3 class="font-bold text-gray-900 text-lg">E-mail</h3>
                                     <p class="text-gray-600 text-lg"><a href="mailto:lilsmitty.cs@gmail.com" class="hover:text-green-800">lilsmitty.cs@gmail.com</a></p>
                                 </div>
@@ -603,8 +625,10 @@
                                 <textarea name="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-1 focus:ring-green-800 focus:outline-none transition text-base" placeholder="Tell us about the project..."></textarea>
                             </div>
 
-                            <!-- ACCESSIBILITY: Upgraded button to bg-green-800 -->
-                            <button type="submit" class="w-full bg-green-800 text-white font-bold py-3.5 rounded-lg hover:bg-green-900 transition shadow-lg text-lg uppercase tracking-wider">Send Message</button>
+                            <button type="submit" class="w-full relative group overflow-hidden bg-green-800 text-white font-bold py-3.5 rounded-lg shadow-lg text-lg uppercase tracking-wider">
+                                <span class="relative z-10">Send Message</span>
+                                <div class="absolute inset-0 bg-green-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -618,12 +642,10 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-4 text-sm">
                  <div class="col-span-1 md:col-span-2">
                      <span class="font-bold text-2xl text-white">LIL SMITTY'S</span>
-                     <!-- ACCESSIBILITY: Lighter gray for better contrast on dark bg -->
                      <p class="mt-3 text-gray-300 max-w-sm text-base">Building and maintaining the outdoor lifestyle you deserve.</p>
                  </div>
                  
                  <div>
-                     <!-- ACCESSIBILITY: Ensure correct hierarchy h3 -->
                      <h3 class="text-white font-bold mb-4 text-lg">Service Areas</h3>
                      <ul class="space-y-2 text-sm">
                         <li>Clermont, FL</li>
@@ -637,7 +659,6 @@
                  </div>
 
                  <div>
-                     <!-- ACCESSIBILITY: Ensure correct hierarchy h3 -->
                      <h3 class="text-white font-bold mb-4 text-lg">Contact</h3>
                      <ul class="space-y-3 text-base">
                         <li>(352) 988-4401</li>
@@ -667,7 +688,7 @@
             const params = new URLSearchParams(window.location.search);
             const page = params.get('page');
             if (page) {
-                switchPage(page, false); // false means don't push state again
+                switchPage(page, false); 
             }
 
             // Initialize Comparison Sliders (MOBILE FRIENDLY SWIPING)
