@@ -31,14 +31,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <link href="./styles.css" rel="stylesheet">
-    
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     </noscript>
     
+    <script src="https://cdn.tailwindcss.com" defer></script>
     <script src="https://unpkg.com/lucide@latest" defer></script>
     
     <style>
@@ -57,7 +56,6 @@
 
         .page-section {
             display: none;
-            /* Composited fade in for page switch (Opacity + Transform) */
             animation: fadeIn 0.4s ease-in-out; 
             will-change: opacity, transform;
         }
@@ -80,10 +78,9 @@
             background-position: center;
         }
         
-        /* Mobile Hero Background Optimization */
+        /* Keeping this optimization: Smaller background for mobile */
         @media (max-width: 768px) {
             .hero-bg {
-                /* Smaller image for mobile */
                 background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_500/v1765501611/hero-background_qamaad.jpg');
             }
         }
@@ -125,7 +122,7 @@
             cursor: pointer;
             z-index: 2001;
             opacity: 0.8;
-            transition: opacity 0.2s; /* Opacity is safe to animate */
+            transition: opacity 0.2s; 
         }
         #lightbox-close:hover { opacity: 1; }
         
@@ -137,8 +134,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
-
+<body class="bg-gray-50 text-gray-800" style="opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out;">
     <nav class="bg-white shadow-md fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20"> 
@@ -814,5 +810,15 @@
             document.getElementById('lightbox-img').src = '';
         }
     </script>
+    <script>
+        // The "Curtain Lifter"
+        // Wait until the entire page (scripts, styles, images) is ready
+        window.addEventListener('load', function() {
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = '1';
+        });
+    </script>
+</body>
+</html>
 </body>
 </html>
