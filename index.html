@@ -26,19 +26,74 @@
     <link rel="icon" href="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto,w_128/v1765501611/logo_tplvyc.jpg" type="image/jpeg">
     
     <link rel="preload" as="image" href="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_1000/v1765501611/hero-background_qamaad.jpg" fetchpriority="high">
-
     <link rel="preconnect" href="https://res.cloudinary.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
+    <style>
+        /* This hides the body instantly before anything else loads */
+        html {
+            background-color: #f9fafb; /* Matches bg-gray-50 */
+        }
+        body {
+            opacity: 0; /* Start hidden */
+            visibility: hidden;
+            transition: opacity 0.4s ease-in-out; /* Smooth fade in */
+        }
+        /* Class used by JS to reveal the site */
+        body.loaded {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     </noscript>
     
-    <script src="https://cdn.tailwindcss.com" defer></script>
     <script src="https://unpkg.com/lucide@latest" defer></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HomeAndConstructionBusiness",
+      "name": "Lil Smitty's Services, LLC",
+      "image": "https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_1000/v1765501611/hero-background_qamaad.jpg",
+      "@id": "https://lilsmitty.com",
+      "url": "https://lilsmitty.com",
+      "telephone": "+1-352-988-4401",
+      "email": "lilsmitty.cs@gmail.com",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Clermont",
+        "addressRegion": "FL",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCircle",
+        "geoMidpoint": {
+            "@type": "GeoCoordinates",
+            "latitude": 28.5494,
+            "longitude": -81.7729
+        },
+        "geoRadius": "40000"
+      },
+      "areaServed": [
+        "Clermont",
+        "Groveland",
+        "Minneola",
+        "Winter Garden",
+        "Montverde",
+        "Oakland"
+      ],
+      "description": "Professional stump grinding, land clearing, and vegetation removal services in Central Florida. Licensed and insured."
+    }
+    </script>
     
     <style>
         body { 
@@ -56,17 +111,18 @@
 
         .page-section {
             display: none;
-            animation: fadeIn 0.4s ease-in-out; 
+            /* Animation handled by section logic, but initial body load is now handled globally */
             will-change: opacity, transform;
         }
         
         .page-section.active {
             display: block;
+            animation: fadeInSection 0.4s ease-in-out;
         }
 
         #home-page { padding-top: 0; }
 
-        @keyframes fadeIn {
+        @keyframes fadeInSection {
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -78,7 +134,6 @@
             background-position: center;
         }
         
-        /* Keeping this optimization: Smaller background for mobile */
         @media (max-width: 768px) {
             .hero-bg {
                 background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_500/v1765501611/hero-background_qamaad.jpg');
@@ -134,7 +189,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800" style="opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out;">
+<body class="bg-gray-50 text-gray-800">
     <nav class="bg-white shadow-md fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20"> 
@@ -660,7 +715,7 @@
                         <li>Winter Garden, FL</li>
                         <li>Oakland, FL</li>
                         <li>Orlando, FL</li>
-                     </ul>
+                      </ul>
                  </div>
 
                  <div>
@@ -669,7 +724,7 @@
                         <li>(352) 988-4401</li>
                         <li>lilsmitty.cs@gmail.com</li>
                         <li class="text-green-500 font-bold">Licensed & Insured</li>
-                     </ul>
+                      </ul>
                  </div>
             </div>
             
@@ -685,110 +740,99 @@
     </div>
 
     <script>
-        // Initialize Icons
+        // 1. Reveal Site (Fixes FOUC/Junk Load)
         document.addEventListener('DOMContentLoaded', () => {
+            // Wait a split second to ensure Tailwind has processed, then reveal
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 100);
+
+            // Initialize Icons
             if (typeof lucide !== 'undefined') lucide.createIcons();
             
-            // Handle URL Parameters on Page Load (SEO FIX)
+            // Handle URL Parameters (SEO Fix)
             const params = new URLSearchParams(window.location.search);
             const page = params.get('page');
             if (page) {
                 switchPage(page, false); 
             }
-
-            // Initialize Comparison Sliders (MOBILE FRIENDLY SWIPING)
-            document.querySelectorAll('.comparison-container').forEach(container => {
-                const overlay = container.querySelector('.img-top');
-                const handle = container.querySelector('.slider-handle');
-                let active = false;
-
-                // Helper to update slider position
-                const updateSlider = (x) => {
-                    const rect = container.getBoundingClientRect();
-                    // Calculate percentage (0 to 100)
-                    let val = ((x - rect.left) / rect.width) * 100;
-                    // Clamp value
-                    val = Math.max(0, Math.min(100, val));
-                    
-                    if (overlay && handle) {
-                        overlay.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
-                        handle.style.left = `${val}%`;
-                    }
-                };
-
-                // Mouse Events (Desktop)
-                container.addEventListener('mousedown', (e) => {
-                    active = true;
-                    updateSlider(e.clientX);
-                });
-                
-                window.addEventListener('mousemove', (e) => {
-                    if (!active) return;
-                    updateSlider(e.clientX);
-                });
-
-                window.addEventListener('mouseup', () => {
-                    active = false;
-                });
-
-                // Touch Events (Mobile)
-                container.addEventListener('touchstart', (e) => {
-                    active = true;
-                    updateSlider(e.touches[0].clientX);
-                }, { passive: true });
-
-                container.addEventListener('touchmove', (e) => {
-                    if (!active) return;
-                    // Note: We are NOT using preventDefault() to allow vertical scrolling
-                    // CSS 'touch-action: pan-y' handles the scroll blocking horizontally
-                    updateSlider(e.touches[0].clientX);
-                }, { passive: true });
-
-                container.addEventListener('touchend', () => {
-                    active = false;
-                });
-            });
         });
 
-        // Toggle Mobile Menu
+        // 2. Comparison Slider Logic
+        document.querySelectorAll('.comparison-container').forEach(container => {
+            const overlay = container.querySelector('.img-top');
+            const handle = container.querySelector('.slider-handle');
+            let active = false;
+
+            const updateSlider = (x) => {
+                const rect = container.getBoundingClientRect();
+                let val = ((x - rect.left) / rect.width) * 100;
+                val = Math.max(0, Math.min(100, val));
+                
+                if (overlay && handle) {
+                    overlay.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+                    handle.style.left = `${val}%`;
+                }
+            };
+
+            container.addEventListener('mousedown', (e) => { active = true; updateSlider(e.clientX); });
+            window.addEventListener('mousemove', (e) => { if (active) updateSlider(e.clientX); });
+            window.addEventListener('mouseup', () => { active = false; });
+            
+            // Mobile Touch Support
+            container.addEventListener('touchstart', (e) => { active = true; updateSlider(e.touches[0].clientX); }, { passive: true });
+            container.addEventListener('touchmove', (e) => { if (active) updateSlider(e.touches[0].clientX); }, { passive: true });
+            container.addEventListener('touchend', () => { active = false; });
+        });
+
+        // 3. Mobile Menu Toggle
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
         btn.addEventListener('click', () => {
             menu.classList.toggle('hidden');
         });
 
-        // Virtual Page Switcher logic with History API
+        // 4. Improved Page Switcher
+        const pageTitles = {
+            'home': "Lil Smitty's Services | Stump Grinding & Land Clearing",
+            'about': "About Us | Lil Smitty's Services",
+            'stumps': "Stump Grinding Service | Clermont, FL",
+            'clearing': "Land Clearing & Site Prep | Central Florida",
+            'bees': "Smitty's Beez | Local Raw Honey & Apiary",
+            'gallery': "Project Gallery | Lil Smitty's Services",
+            'contact': "Get a Quote | Lil Smitty's Services"
+        };
+
         function switchPage(pageName, updateHistory = true) {
-            // 1. Hide all pages
+            // Hide all pages
             document.querySelectorAll('.page-section').forEach(page => {
                 page.classList.remove('active');
             });
 
-            // 2. Show the specific page
+            // Show target page
             const target = document.getElementById(pageName + '-page');
             if (target) {
                 target.classList.add('active');
                 window.scrollTo(0, 0); 
                 
-                // 3. Update URL without reloading (SEO FIX)
+                if (pageTitles[pageName]) {
+                    document.title = pageTitles[pageName];
+                }
+
                 if (updateHistory) {
                     try {
                         const newUrl = pageName === 'home' ? '/' : `?page=${pageName}`;
                         history.pushState({page: pageName}, '', newUrl);
                     } catch (e) {
-                        console.log("History API not supported in this environment:", e);
+                        console.log("History API error:", e);
                     }
                 }
             } else {
-                // If page doesn't exist, go home
                 document.getElementById('home-page').classList.add('active');
             }
-
-            // 4. Update Mobile Menu (close it)
             menu.classList.add('hidden');
         }
 
-        // Handle Browser Back Button
         window.onpopstate = function(event) {
             if (event.state && event.state.page) {
                 switchPage(event.state.page, false);
@@ -810,15 +854,5 @@
             document.getElementById('lightbox-img').src = '';
         }
     </script>
-    <script>
-        // The "Curtain Lifter"
-        // Wait until the entire page (scripts, styles, images) is ready
-        window.addEventListener('load', function() {
-            document.body.style.visibility = 'visible';
-            document.body.style.opacity = '1';
-        });
-    </script>
-</body>
-</html>
 </body>
 </html>
