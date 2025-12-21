@@ -30,30 +30,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <style>
-        /* This hides the body instantly before anything else loads */
-        html {
-            background-color: #f9fafb; /* Matches bg-gray-50 */
-        }
-        body {
-            opacity: 0; /* Start hidden */
-            visibility: hidden;
-            transition: opacity 0.4s ease-in-out; /* Smooth fade in */
-        }
-        /* Class used by JS to reveal the site */
-        body.loaded {
-            opacity: 1;
-            visibility: visible;
-        }
-    </style>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-    </noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/lucide@latest" defer></script>
 
@@ -94,620 +71,660 @@
       "description": "Professional stump grinding, land clearing, and vegetation removal services in Central Florida. Licensed and insured."
     }
     </script>
-    
+
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
+        /* --- 1. Reset & Variables --- */
+        :root {
+            --primary-green: #166534; /* green-800 */
+            --dark-green: #14532d;    /* green-900 */
+            --accent-green: #4ade80;  /* green-300 */
+            --primary-amber: #d97706; /* amber-600 */
+            --light-amber: #fffbeb;   /* amber-50 */
+            --dark: #111827;          /* gray-900 */
+            --light: #f9fafb;         /* gray-50 */
+            --white: #ffffff;
+            --text-main: #1f2937;     /* gray-800 */
+            --text-muted: #4b5563;    /* gray-600 */
+            --font-main: 'Inter', sans-serif;
+            --font-head: 'Oswald', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: var(--font-main);
+            background-color: var(--light);
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-        }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Oswald', sans-serif; }
-        
-        .page-wrapper {
-            flex-grow: 1; 
-            padding-top: 80px; 
+            line-height: 1.5;
         }
 
-        .page-section {
+        /* --- 2. Typography --- */
+        h1, h2, h3, h4, h5 { font-family: var(--font-head); line-height: 1.1; }
+        
+        .text-center { text-align: center; }
+        .text-bold { font-weight: 700; }
+        .uppercase { text-transform: uppercase; }
+        
+        /* --- 3. Layout & Utilities --- */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .page-wrapper { flex-grow: 1; padding-top: 80px; }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        @media (min-width: 768px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        @media (min-width: 768px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
+        
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .gap-4 { gap: 1rem; }
+        .gap-2 { gap: 0.5rem; }
+        
+        .hidden { display: none !important; }
+        .block { display: block; }
+        
+        /* --- 4. Navigation --- */
+        .navbar {
+            background: var(--white);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            top: 0;
+            height: 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-logo { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; }
+        .nav-logo img { height: 40px; width: auto; }
+        .nav-title { display: flex; flex-direction: column; }
+        .nav-title h1 { font-size: 1.25rem; font-weight: 700; color: var(--dark); letter-spacing: -0.025em; }
+        .nav-title span { font-size: 0.8rem; letter-spacing: 0.1em; color: var(--primary-green); font-weight: 700; text-transform: uppercase; }
+
+        .desktop-menu { display: none; gap: 2rem; align-items: center; }
+        @media (min-width: 1024px) { .desktop-menu { display: flex; } }
+
+        .nav-btn {
+            background: none; border: none; cursor: pointer;
+            font-size: 1rem; font-weight: 600; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.025em;
+            transition: color 0.2s;
+        }
+        .nav-btn:hover { color: var(--primary-green); }
+        .nav-btn.active-stump { color: var(--primary-green); border-bottom: 2px solid var(--primary-green); }
+        .nav-btn.active-bee:hover { color: var(--primary-amber); }
+
+        .btn-cta {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 0.6rem 1.25rem;
+            border-radius: 0.375rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+        }
+        .btn-cta:hover { background-color: var(--dark-green); }
+
+        .mobile-toggle { display: block; background: none; border: none; cursor: pointer; color: var(--text-muted); }
+        @media (min-width: 1024px) { .mobile-toggle { display: none; } }
+
+        .mobile-menu {
+            position: absolute; top: 80px; left: 0; width: 100%;
+            background: white; border-top: 1px solid #e5e7eb;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            padding: 1rem;
             display: none;
-            /* Animation handled by section logic, but initial body load is now handled globally */
-            will-change: opacity, transform;
         }
-        
-        .page-section.active {
-            display: block;
-            animation: fadeInSection 0.4s ease-in-out;
-        }
-
-        #home-page { padding-top: 0; }
-
-        @keyframes fadeInSection {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+        .mobile-menu.open { display: block; }
+        .mobile-link {
+            display: block; width: 100%; text-align: left;
+            padding: 0.75rem; background: none; border: none;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 1rem; font-weight: 500; color: var(--text-muted);
         }
 
-        .hero-bg {
-            background-color: #1a202c; 
+        /* --- 5. Hero Section --- */
+        .hero {
+            background-color: #1a202c;
             background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_1000/v1765501611/hero-background_qamaad.jpg');
             background-size: cover;
             background-position: center;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 2rem;
         }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .hero h1 span { color: var(--accent-green); }
+        @media (min-width: 768px) { .hero h1 { font-size: 3.75rem; } }
         
-        @media (max-width: 768px) {
-            .hero-bg {
-                background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_500/v1765501611/hero-background_qamaad.jpg');
-            }
+        .hero p { font-size: 1.25rem; max-width: 48rem; margin: 0 auto 2rem; color: #f3f4f6; font-weight: 300; }
+        
+        .btn-hero {
+            padding: 0.75rem 2rem;
+            font-size: 1.125rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0.5rem;
+        }
+        .btn-primary { background: var(--primary-green); color: white; border: none; border-bottom: 4px solid #064e3b; }
+        .btn-primary:hover { background: var(--dark-green); transform: translateY(1px); }
+        
+        .btn-outline { background: transparent; border: 2px solid white; color: white; }
+        .btn-outline:hover { background: white; color: var(--dark-green); }
+
+        /* --- 6. Sections & Cards --- */
+        .section-bar { background: var(--dark-green); color: white; padding: 1.5rem 0; }
+        .section-padding { padding: 4rem 1rem; }
+        .section-title { font-size: 2.25rem; color: var(--dark); font-weight: 700; margin-bottom: 0.5rem; }
+        .section-subtitle { color: var(--text-muted); font-size: 1.125rem; margin-bottom: 1rem; }
+        .divider { width: 4rem; height: 4px; background: var(--primary-green); margin: 0 auto 3rem; }
+
+        .card {
+            background: var(--light);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            border-top: 4px solid var(--primary-green);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            position: relative;
+            height: 100%; /* Ensures equal height cards */
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+        .card-amber { border-color: var(--primary-amber); background: var(--light-amber); }
+        
+        .card-body { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .icon-circle {
+            width: 3rem; height: 3rem;
+            background: #dcfce7; color: var(--primary-green);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .card-amber .icon-circle { background: #fef3c7; color: var(--primary-amber); }
+        
+        .card-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--dark); }
+        .card-text { color: var(--text-muted); margin-bottom: 1rem; flex-grow: 1; }
+        .link-text { color: var(--primary-green); font-weight: 700; font-size: 0.875rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; margin-top: auto; }
+        .card-amber .link-text { color: var(--primary-amber); }
+
+        /* --- 7. Comparison Slider --- */
+        .comparison-wrapper { background: white; padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .comparison-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            cursor: col-resize;
+            user-select: none;
+            touch-action: pan-y; 
+        }
+        .comparison-img { 
+            width: 100%; height: 100%; object-fit: cover; display: block; 
+            pointer-events: none; 
+            user-drag: none;
+            -webkit-user-drag: none;
+        }
+        .img-top { position: absolute; top: 0; left: 0; height: 100%; width: 100%; clip-path: inset(0 50% 0 0); z-index: 2; }
+        .label { position: absolute; top: 1rem; padding: 0.25rem 0.5rem; background: rgba(0,0,0,0.6); color: white; font-size: 0.75rem; font-weight: 700; border-radius: 0.25rem; z-index: 1; }
+        .label-after { right: 1rem; }
+        .label-before { left: 1rem; }
+        
+        .slider-handle {
+            position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; background: white; z-index: 3;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5); pointer-events: none;
+        }
+        .slider-circle {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 2.5rem; height: 2.5rem; background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: var(--primary-green);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
-        .img-container {
-            position: relative;
-            background: #e5e7eb;
-            overflow: hidden;
+        /* --- 8. Forms & Inputs --- */
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main); }
+        .form-input {
+            width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem;
+            font-size: 1rem; transition: border-color 0.2s; font-family: var(--font-main);
         }
+        .form-input:focus { outline: none; border-color: var(--primary-green); ring: 2px solid var(--primary-green); }
+        .btn-submit { width: 100%; padding: 1rem; font-size: 1.125rem; }
+
+        /* --- 9. Gallery & Lightbox --- */
+        .gallery-grid { columns: 2; column-gap: 1rem; }
+        @media (min-width: 768px) { .gallery-grid { columns: 3; } }
+        @media (min-width: 1024px) { .gallery-grid { columns: 4; } }
+        
+        .gallery-item { margin-bottom: 1rem; break-inside: avoid; }
+        .gallery-img { width: 100%; border-radius: 0.5rem; cursor: pointer; transition: opacity 0.2s; }
+        .gallery-img:hover { opacity: 0.9; }
 
         #lightbox {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            cursor: pointer;
+            display: none; position: fixed; z-index: 2000; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.95);
+            align-items: center; justify-content: center; padding: 20px;
         }
         #lightbox.active { display: flex; }
-        #lightbox img {
-            max-width: 100%;
-            max-height: 90vh;
-            border-radius: 4px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
-            cursor: default;
-        }
-        #lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: white;
-            font-size: 40px; 
-            cursor: pointer;
-            z-index: 2001;
-            opacity: 0.8;
-            transition: opacity 0.2s; 
-        }
-        #lightbox-close:hover { opacity: 1; }
-        
-        .cursor-pointer { cursor: pointer; }
+        #lightbox img { max-width: 100%; max-height: 90vh; border-radius: 4px; box-shadow: 0 0 30px rgba(0,0,0,0.8); }
+        #lightbox-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
 
-        .comparison-container {
-            touch-action: pan-y;
-            cursor: ew-resize;
-        }
+        /* --- 10. Footer --- */
+        .footer { background: var(--dark); color: #9ca3af; padding: 2rem 0; margin-top: auto; }
+        .footer h3 { color: white; font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem; }
+        .footer ul { list-style: none; }
+        .footer li { margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .footer-bottom { border-top: 1px solid #374151; margin-top: 2rem; padding-top: 1rem; font-size: 0.875rem; }
+
+        /* --- 11. Page Logic --- */
+        .page-section { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.4s, transform 0.4s; }
+        .page-section.active { display: block; opacity: 1; transform: translateY(0); }
+        #home-page { padding-top: 0; }
+        
+        .img-rounded { border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
-    <nav class="bg-white shadow-md fixed w-full z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20"> 
-                <div class="flex items-center flex-shrink-0 cursor-pointer" onclick="switchPage('home')" title="Go to Home">
-                    <div class="flex items-center gap-3">
-                        <div class="h-10 w-auto flex items-center justify-center bg-gray-100 rounded p-1">
-                           <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto,w_80/v1765501611/logo_tplvyc.jpg" alt="Lil Smitty Services Logo" class="h-10 w-auto object-contain" width="40" height="40">
-                        </div>
-                        <div class="flex flex-col justify-center">
-                            <span class="font-bold text-xl md:text-2xl tracking-tight text-gray-900 leading-none whitespace-nowrap">LIL SMITTY'S</span>
-                            <span class="font-bold text-sm md:text-base tracking-widest text-green-800 leading-none uppercase">Services, LLC</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="hidden lg:flex items-center space-x-6 xl:space-x-8">
-                    <button onclick="switchPage('home')" class="nav-btn text-base font-semibold text-gray-700 hover:text-green-800 uppercase tracking-wide">Home</button>
-                    <button onclick="switchPage('about')" class="nav-btn text-base font-semibold text-gray-700 hover:text-green-800 uppercase tracking-wide">About</button>
-                    <button onclick="switchPage('stumps')" class="nav-btn text-base font-bold text-green-800 hover:text-green-900 uppercase tracking-wide border-b-2 border-transparent hover:border-green-800">Stump Grinding</button>
-                    <button onclick="switchPage('clearing')" class="nav-btn text-base font-semibold text-gray-700 hover:text-green-800 uppercase tracking-wide">Land Clearing</button>
-                    <button onclick="switchPage('bees')" class="nav-btn text-base font-semibold text-gray-700 hover:text-amber-600 uppercase tracking-wide">Beez</button>
-                    <button onclick="switchPage('gallery')" class="nav-btn text-base font-semibold text-gray-700 hover:text-green-800 uppercase tracking-wide">Gallery</button>
-                    
-                    <button onclick="switchPage('contact')" class="relative group overflow-hidden bg-green-800 text-white px-5 py-2.5 rounded-md font-bold text-sm shadow-lg uppercase">
-                        <span class="relative z-10">Contact</span>
-                        <div class="absolute inset-0 bg-green-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
-                    </button>
-                </div>
+<body>
 
-                <div class="flex items-center gap-3 lg:hidden">
-                    <button onclick="switchPage('contact')" class="relative group overflow-hidden bg-green-800 text-white px-4 py-2 rounded-md font-bold text-xs uppercase tracking-wide shadow-md">
-                        <span class="relative z-10">Contact</span>
-                        <div class="absolute inset-0 bg-green-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
-                    </button>
-                    
-                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-green-800 focus:outline-none p-2" aria-label="Open Menu">
-                        <i data-lucide="menu" class="h-8 w-8"></i>
-                    </button>
+    <nav class="navbar">
+        <div class="container" style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+            <div class="nav-logo" onclick="switchPage('home')">
+                <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto,w_80/v1765501611/logo_tplvyc.jpg" alt="Logo">
+                <div class="nav-title">
+                    <h1>LIL SMITTY'S</h1>
+                    <span>Services, LLC</span>
                 </div>
             </div>
+
+            <div class="desktop-menu">
+                <button onclick="switchPage('home')" class="nav-btn">Home</button>
+                <button onclick="switchPage('about')" class="nav-btn">About</button>
+                <button onclick="switchPage('stumps')" class="nav-btn active-stump">Stump Grinding</button>
+                <button onclick="switchPage('clearing')" class="nav-btn">Land Clearing</button>
+                <button onclick="switchPage('bees')" class="nav-btn active-bee">Beez</button>
+                <button onclick="switchPage('gallery')" class="nav-btn">Gallery</button>
+                <button onclick="switchPage('contact')" class="btn-cta">Contact</button>
+            </div>
+
+            <button class="mobile-toggle" id="mobile-menu-btn" aria-label="Menu">
+                <i data-lucide="menu" style="width: 32px; height: 32px;"></i>
+            </button>
         </div>
 
-        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl">
-            <div class="px-4 pt-2 pb-4 space-y-1">
-                <button onclick="switchPage('home')" class="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 border-b border-gray-100">Home</button>
-                <button onclick="switchPage('about')" class="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 border-b border-gray-100">About Us</button>
-                <button onclick="switchPage('stumps')" class="block w-full text-left px-3 py-3 rounded-md text-base font-bold text-green-800 hover:bg-green-50 border-b border-gray-100">Stump Grinding</button>
-                <button onclick="switchPage('clearing')" class="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 border-b border-gray-100">Land Clearing</button>
-                <button onclick="switchPage('bees')" class="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-amber-50 border-b border-gray-100">Smitty's Beez</button>
-                <button onclick="switchPage('gallery')" class="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 border-b border-gray-100">Gallery</button>
-                <button onclick="switchPage('contact')" class="block w-full text-left px-3 py-3 mt-4 text-center rounded-md text-base font-bold bg-green-800 text-white hover:bg-green-900">Get a Quote</button>
-            </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <button onclick="switchPage('home')" class="mobile-link">Home</button>
+            <button onclick="switchPage('about')" class="mobile-link">About Us</button>
+            <button onclick="switchPage('stumps')" class="mobile-link" style="color: var(--primary-green); font-weight: 700;">Stump Grinding</button>
+            <button onclick="switchPage('clearing')" class="mobile-link">Land Clearing</button>
+            <button onclick="switchPage('bees')" class="mobile-link" style="color: var(--primary-amber);">Smitty's Beez</button>
+            <button onclick="switchPage('gallery')" class="mobile-link">Gallery</button>
+            <button onclick="switchPage('contact')" class="btn-cta" style="width: 100%; margin-top: 1rem;">Get a Quote</button>
         </div>
     </nav>
 
     <main class="page-wrapper">
 
         <div id="home-page" class="page-section active">
-            <section class="hero-bg min-h-[600px] flex items-center justify-center text-center px-4 relative">
-                <div class="max-w-5xl mx-auto pt-20">
-                    <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-wide drop-shadow-md">
-                        EXPERT <span class="text-green-300">STUMP GRINDING</span> <br>& LAND CLEARING
-                    </h1>
-                    <p class="text-xl md:text-2xl text-gray-100 mb-8 max-w-3xl mx-auto font-light leading-relaxed">
-                        Professional site assessment, vegetation removal, and specialized machinery for residential and commercial needs in Clermont and Central Florida.
-                    </p>
-                    <div class="flex flex-col sm:flex-row justify-center gap-4">
-                        <button onclick="switchPage('contact')" class="relative group overflow-hidden bg-green-800 text-white px-8 py-3 rounded-lg font-bold text-lg shadow-xl border-b-4 border-green-950">
-                            <span class="relative z-10">Get a Stump Quote</span>
-                            <div class="absolute inset-0 bg-green-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
-                        </button>
-                        
-                        <button onclick="document.getElementById('services-section').scrollIntoView({behavior: 'smooth'})" class="relative group overflow-hidden bg-transparent border-2 border-white text-white hover:text-green-900 px-8 py-3 rounded-lg font-bold text-lg transition-colors duration-0">
-                            <span class="relative z-10">View Services</span>
-                            <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
-                        </button>
+            <section class="hero">
+                <div>
+                    <h1>EXPERT <span>STUMP GRINDING</span><br>& LAND CLEARING</h1>
+                    <p>Professional site assessment, vegetation removal, and specialized machinery for residential and commercial needs in Clermont and Central Florida.</p>
+                    <div class="flex justify-center" style="flex-wrap: wrap;">
+                        <button onclick="switchPage('contact')" class="btn-hero btn-primary">Get a Stump Quote</button>
+                        <button onclick="document.getElementById('services-section').scrollIntoView({behavior: 'smooth'})" class="btn-hero btn-outline">View Services</button>
                     </div>
                 </div>
             </section>
             
-            <section class="bg-green-900 text-white py-6">
-                <div class="max-w-7xl mx-auto px-4 text-center">
-                    <div class="flex flex-wrap justify-center gap-8 md:gap-16 text-base md:text-lg font-medium">
-                        <div class="flex items-center"><i data-lucide="shield-check" class="mr-2 w-6 h-6"></i> Licensed & Insured</div>
-                        <div class="flex items-center"><i data-lucide="map-pin" class="mr-2 w-6 h-6"></i> Clermont, FL</div>
-                    </div>
+            <section class="section-bar text-center">
+                <div class="container flex justify-center" style="flex-wrap: wrap; gap: 2rem;">
+                    <div class="flex items-center"><i data-lucide="shield-check" style="margin-right: 8px;"></i> Licensed & Insured</div>
+                    <div class="flex items-center"><i data-lucide="map-pin" style="margin-right: 8px;"></i> Clermont, FL</div>
                 </div>
             </section>
 
-            <section id="services-section" class="py-16 bg-white scroll-mt-24">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">OUR EXPERTISE</h2>
-                        <p class="text-gray-600 max-w-3xl mx-auto text-lg">Specialized outdoor services to reclaim your property.</p>
-                        <div class="w-16 h-1 bg-green-800 mx-auto mt-3"></div>
+            <section id="services-section" class="section-padding" style="background: white;">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <h2 class="section-title">OUR EXPERTISE</h2>
+                        <p class="section-subtitle">Specialized outdoor services to reclaim your property.</p>
+                        <div class="divider"></div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="relative bg-gray-50 rounded-xl p-0 border-t-4 border-green-800 group cursor-pointer" onclick="switchPage('stumps')">
-                            <div class="absolute inset-0 rounded-xl shadow-lg pointer-events-none"></div>
-                            <div class="absolute inset-0 rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none"></div>
-                            
-                            <div class="relative z-10 p-6">
-                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-800">
-                                    <i data-lucide="axe" class="h-6 w-6"></i>
-                                </div>
-                                <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-green-800">Stump Grinding</h3>
-                                <p class="text-gray-600 mb-4 leading-relaxed">Complete removal of stumps and roots using precision machinery. We handle stumps of all sizes.</p>
-                                <button class="text-green-800 font-bold uppercase text-sm tracking-wide group-hover:text-green-900 flex items-center">
-                                    View Details <i data-lucide="arrow-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
-                                </button>
+                    <div class="grid-3">
+                        <div class="card" onclick="switchPage('stumps')">
+                            <div class="card-body">
+                                <div class="icon-circle"><i data-lucide="axe"></i></div>
+                                <h3 class="card-title">Stump Grinding</h3>
+                                <p class="card-text">Complete removal of stumps and roots using precision machinery. We handle stumps of all sizes.</p>
+                                <span class="link-text">View Details <i data-lucide="arrow-right" style="width: 16px;"></i></span>
                             </div>
                         </div>
 
-                        <div class="relative bg-gray-50 rounded-xl p-0 border-t-4 border-green-800 group cursor-pointer" onclick="switchPage('clearing')">
-                            <div class="absolute inset-0 rounded-xl shadow-lg pointer-events-none"></div>
-                            <div class="absolute inset-0 rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none"></div>
-                            
-                            <div class="relative z-10 p-6">
-                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-800">
-                                    <i data-lucide="tractor" class="h-6 w-6"></i>
-                                </div>
-                                <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-green-800">Land Clearing</h3>
-                                <p class="text-gray-600 mb-4 leading-relaxed">Comprehensive site preparation removing trees, rocks, and debris. Get your lot ready for building.</p>
-                                 <button class="text-green-800 font-bold uppercase text-sm tracking-wide group-hover:text-green-900 flex items-center">
-                                    View Details <i data-lucide="arrow-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
-                                </button>
+                        <div class="card" onclick="switchPage('clearing')">
+                            <div class="card-body">
+                                <div class="icon-circle"><i data-lucide="tractor"></i></div>
+                                <h3 class="card-title">Land Clearing</h3>
+                                <p class="card-text">Comprehensive site preparation removing trees, rocks, and debris. Get your lot ready for building.</p>
+                                <span class="link-text">View Details <i data-lucide="arrow-right" style="width: 16px;"></i></span>
                             </div>
                         </div>
 
-                        <div class="relative bg-amber-50 rounded-xl p-0 border-t-4 border-amber-400 group cursor-pointer" onclick="switchPage('bees')">
-                             <div class="absolute inset-0 rounded-xl shadow-lg pointer-events-none"></div>
-                             <div class="absolute inset-0 rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none"></div>
-
-                             <div class="relative z-10 p-6">
-                                 <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mb-4 text-amber-600">
-                                    <i data-lucide="hexagon" class="h-6 w-6"></i>
-                                </div>
-                                <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-amber-800">Smitty's Beez</h3>
-                                <p class="text-gray-600 mb-4 leading-relaxed">Pure, raw local honey and beeswax products. Sustainable & delicious. From our hives to your home.</p>
-                                 <button class="text-amber-800 font-bold uppercase text-sm tracking-wide group-hover:text-amber-900 flex items-center">
-                                    Visit Apiary <i data-lucide="arrow-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
-                                </button>
+                        <div class="card card-amber" onclick="switchPage('bees')">
+                            <div class="card-body">
+                                <div class="icon-circle"><i data-lucide="hexagon"></i></div>
+                                <h3 class="card-title">Smitty's Beez</h3>
+                                <p class="card-text">Pure, raw local honey and beeswax products. Sustainable & delicious. From our hives to your home.</p>
+                                <span class="link-text">Visit Apiary <i data-lucide="arrow-right" style="width: 16px;"></i></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section class="py-16 bg-gray-50">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center mb-10">
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">REAL RESULTS</h2>
-                        <p class="text-gray-600 max-w-3xl mx-auto text-lg">See the difference our services make. Drag the slider to compare.</p>
-                        <div class="w-16 h-1 bg-green-800 mx-auto mt-3"></div>
+            <section class="section-padding">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <h2 class="section-title">REAL RESULTS</h2>
+                        <p class="section-subtitle">See the difference our services make. Drag the slider to compare.</p>
+                        <div class="divider"></div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="bg-white p-4 rounded-xl shadow-md">
-                            <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">Stump Grinding</h3>
-                            <div class="comparison-container relative w-full aspect-[4/3] rounded-lg overflow-hidden group select-none">
-                                <div class="absolute inset-0 pointer-events-none">
-                                    <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_600/v1765839348/after_stump_sforuz.jpg" class="w-full h-full object-cover" alt="After Stump Grinding">
-                                    <span class="absolute top-4 right-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded z-10">AFTER</span>
+                    <div class="grid-3">
+                        <div class="comparison-wrapper">
+                            <h3 class="text-center" style="margin-bottom: 0.5rem; font-weight: 700;">Stump Grinding</h3>
+                            <div class="comparison-container">
+                                <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_600/v1765839348/after_stump_sforuz.jpg" class="comparison-img" alt="After">
+                                <span class="label label-after">AFTER</span>
+                                
+                                <div class="img-top">
+                                    <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_600/v1765839348/before_stump_iky3lh.jpg" class="comparison-img" alt="Before">
+                                    <span class="label label-before">BEFORE</span>
                                 </div>
-                                <div class="img-top absolute inset-0 z-20 pointer-events-none" style="clip-path: inset(0 50% 0 0);">
-                                    <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_600/v1765839348/before_stump_iky3lh.jpg" class="w-full h-full object-cover" alt="Before Stump Grinding">
-                                    <span class="absolute top-4 left-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded z-10">BEFORE</span>
-                                </div>
-                                <div class="slider-handle absolute top-0 bottom-0 w-1 bg-white z-30 pointer-events-none shadow-lg" style="left: 50%;">
-                                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
-                                        <i data-lucide="chevrons-left-right" class="w-4 h-4 text-green-800"></i>
-                                    </div>
+                                
+                                <div class="slider-handle">
+                                    <div class="slider-circle"><i data-lucide="chevrons-left-right" style="width: 16px;"></i></div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-md">
-                            <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">Path Clearing</h3>
-                             <div class="comparison-container relative w-full aspect-[4/3] rounded-lg overflow-hidden group select-none">
-                                <div class="absolute inset-0 pointer-events-none">
-                                    <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_600/v1765839349/after_path_ywwifz.jpg" class="w-full h-full object-cover" alt="After Path Clearing">
-                                    <span class="absolute top-4 right-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded z-10">AFTER</span>
-                                </div>
-                                <div class="img-top absolute inset-0 z-20 pointer-events-none" style="clip-path: inset(0 50% 0 0);">
-                                    <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_600/v1765839348/before_path_sjs8kz.jpg" class="w-full h-full object-cover" alt="Before Path Clearing">
-                                    <span class="absolute top-4 left-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded z-10">BEFORE</span>
-                                </div>
-                                <div class="slider-handle absolute top-0 bottom-0 w-1 bg-white z-30 pointer-events-none shadow-lg" style="left: 50%;">
-                                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
-                                        <i data-lucide="chevrons-left-right" class="w-4 h-4 text-green-800"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-md">
-                            <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">Yard Clearing</h3>
-                             <div class="comparison-container relative w-full aspect-[4/3] rounded-lg overflow-hidden group select-none">
-                                <div class="absolute inset-0 pointer-events-none">
-                                    <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_600/v1765839348/after_yard_e7kmp2.jpg" class="w-full h-full object-cover" alt="After Yard Clearing">
-                                    <span class="absolute top-4 right-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded z-10">AFTER</span>
-                                </div>
-                                <div class="img-top absolute inset-0 z-20 pointer-events-none" style="clip-path: inset(0 50% 0 0);">
-                                    <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_600/v1765839348/before_yard_urjt20.jpg" class="w-full h-full object-cover" alt="Before Yard Clearing">
-                                    <span class="absolute top-4 left-4 bg-black/60 text-white px-2 py-1 text-xs font-bold rounded z-10">BEFORE</span>
-                                </div>
-                                <div class="slider-handle absolute top-0 bottom-0 w-1 bg-white z-30 pointer-events-none shadow-lg" style="left: 50%;">
-                                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
-                                        <i data-lucide="chevrons-left-right" class="w-4 h-4 text-green-800"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-12 bg-gray-900 text-white">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
-                    <div class="text-center md:text-left">
-                        <h2 class="text-3xl font-bold mb-2">Local, Licensed & Trusted</h2>
-                        <p class="text-gray-300 text-lg">Building the outdoor lifestyle you deserve with professionalism.</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <button onclick="switchPage('about')" class="bg-transparent border border-white px-6 py-2.5 rounded-lg font-bold text-base hover:bg-white hover:text-gray-900">More Info</button>
                         
-                        <button onclick="switchPage('contact')" class="relative group overflow-hidden bg-green-800 border border-green-800 px-6 py-2.5 rounded-lg font-bold text-base text-white">
-                             <span class="relative z-10">Get a Quote</span>
-                             <div class="absolute inset-0 bg-green-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
-                        </button>
+                        <div class="comparison-wrapper">
+                             <h3 class="text-center" style="margin-bottom: 0.5rem; font-weight: 700;">Path Clearing</h3>
+                             <div class="comparison-container">
+                                <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_600/v1765839349/after_path_ywwifz.jpg" class="comparison-img" alt="After">
+                                <span class="label label-after">AFTER</span>
+                                <div class="img-top">
+                                    <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_600/v1765839348/before_path_sjs8kz.jpg" class="comparison-img" alt="Before">
+                                    <span class="label label-before">BEFORE</span>
+                                </div>
+                                <div class="slider-handle">
+                                    <div class="slider-circle"><i data-lucide="chevrons-left-right" style="width: 16px;"></i></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-wrapper">
+                             <h3 class="text-center" style="margin-bottom: 0.5rem; font-weight: 700;">Yard Clearing</h3>
+                             <div class="comparison-container">
+                                <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_600/v1765839348/after_yard_e7kmp2.jpg" class="comparison-img" alt="After">
+                                <span class="label label-after">AFTER</span>
+                                <div class="img-top">
+                                    <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_600/v1765839348/before_yard_urjt20.jpg" class="comparison-img" alt="Before">
+                                    <span class="label label-before">BEFORE</span>
+                                </div>
+                                <div class="slider-handle">
+                                    <div class="slider-circle"><i data-lucide="chevrons-left-right" style="width: 16px;"></i></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
         </div>
 
         <div id="about-page" class="page-section">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 border-l-4 border-green-800 pl-4">About Lil Smitty's</h2>
-                        <p class="text-gray-600 mb-6 leading-relaxed text-lg">
-                            Based in Clermont, FL, we service Central Florida and surrounding areas with professional outdoor services. Whether you need a site cleared for development or a stump removed from your front yard, we have the specialized machinery to get the job done efficiently.
-                        </p>
-                        <ul class="space-y-3 text-lg font-medium">
-                            <li class="flex items-center"><i data-lucide="check-circle" class="text-green-800 mr-3 w-6 h-6"></i> Servicing Clermont, Groveland & Minneola</li>
-                            <li class="flex items-center"><i data-lucide="check-circle" class="text-green-800 mr-3 w-6 h-6"></i> Residential & Commercial Services</li>
-                            <li class="flex items-center"><i data-lucide="check-circle" class="text-green-800 mr-3 w-6 h-6"></i> Specialized Equipment for Quick Results</li>
-                        </ul>
-                        <div class="mt-8">
-                            <button onclick="switchPage('contact')" class="relative group overflow-hidden bg-gray-900 text-white px-6 py-3 rounded-lg font-bold text-base shadow-lg">
-                                <span class="relative z-10">Contact Us</span>
-                                <div class="absolute inset-0 bg-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
-                            </button>
+            <section class="section-padding">
+                <div class="container">
+                    <div class="grid-2">
+                        <div>
+                            <h2 class="section-title" style="border-left: 4px solid var(--primary-green); padding-left: 1rem;">About Lil Smitty's</h2>
+                            <p class="section-subtitle">Based in Clermont, FL, we service Central Florida and surrounding areas with professional outdoor services. Whether you need a site cleared for development or a stump removed from your front yard, we have the specialized machinery to get the job done efficiently.</p>
+                            <ul style="list-style: none; margin-bottom: 2rem; font-weight: 500;">
+                                <li class="flex items-center" style="margin-bottom: 0.75rem;"><i data-lucide="check-circle" style="color: var(--primary-green); margin-right: 12px;"></i> Servicing Clermont, Groveland & Minneola</li>
+                                <li class="flex items-center" style="margin-bottom: 0.75rem;"><i data-lucide="check-circle" style="color: var(--primary-green); margin-right: 12px;"></i> Residential & Commercial Services</li>
+                                <li class="flex items-center"><i data-lucide="check-circle" style="color: var(--primary-green); margin-right: 12px;"></i> Specialized Equipment for Quick Results</li>
+                            </ul>
+                            <button onclick="switchPage('contact')" class="btn-hero btn-primary" style="margin: 0; background: var(--dark); border-color: black;">Contact Us</button>
+                        </div>
+                        <div>
+                            <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_600/v1765501628/wholemachine_jxgswf.webp" class="img-rounded" alt="Machine">
                         </div>
                     </div>
-                    <div class="img-container rounded-xl shadow-xl w-full aspect-[4/3] md:aspect-video">
-                        <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_600/v1765501628/wholemachine_jxgswf.webp" alt="Heavy Machinery Equipment in Clermont FL" class="w-full h-full object-cover" loading="lazy">
-                    </div>
                 </div>
-            </div>
+            </section>
         </div>
 
         <div id="stumps-page" class="page-section">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Stump Grinding Services in Clermont</h2>
-                    <div class="w-16 h-1 bg-green-800 mx-auto"></div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <div class="img-container rounded-xl shadow-xl w-full aspect-[4/3] md:aspect-video border-4 border-white">
-                        <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_600/v1765501627/stump_grinding_ytd6ps.webp" alt="Professional Stump Grinding Service" class="w-full h-full object-cover" loading="lazy">
+            <section class="section-padding">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <h2 class="section-title">Stump Grinding Services in Clermont</h2>
+                        <div class="divider"></div>
                     </div>
-                    <div>
-                        <div class="bg-orange-50 p-6 rounded-xl border border-orange-100 mb-6">
-                            <h3 class="text-xl font-bold text-orange-800 mb-3 flex items-center"><i data-lucide="axe" class="mr-3 w-6 h-6"></i> Our Process</h3>
-                            <p class="text-base text-gray-700 leading-relaxed">Stump grinding is a specialized method of removing tree stumps by chipping them into small wood chips. We clear away old stumps to restore your property value in Central Florida.</p>
+                    <div class="grid-2">
+                        <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_600/v1765501627/stump_grinding_ytd6ps.webp" class="img-rounded" alt="Stump Grinding">
+                        <div>
+                            <div style="background: #fff7ed; border: 1px solid #ffedd5; padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 1.5rem;">
+                                <h3 style="color: #9a3412; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center;"><i data-lucide="axe" style="margin-right: 10px;"></i> Our Process</h3>
+                                <p style="color: var(--text-muted);">Stump grinding is a specialized method of removing tree stumps by chipping them into small wood chips. We clear away old stumps to restore your property value in Central Florida.</p>
+                            </div>
+                            <ul style="list-style: none; margin-bottom: 2rem;">
+                                <li class="flex items-center" style="margin-bottom: 0.5rem;"><i data-lucide="check" style="color: var(--primary-green); margin-right: 8px;"></i> Complete Stump Removal</li>
+                                <li class="flex items-center" style="margin-bottom: 0.5rem;"><i data-lucide="check" style="color: var(--primary-green); margin-right: 8px;"></i> Root Grinding</li>
+                                <li class="flex items-center"><i data-lucide="check" style="color: var(--primary-green); margin-right: 8px;"></i> Underbrush Mowing</li>
+                                <li class="flex items-center"><i data-lucide="check" style="color: var(--primary-green); margin-right: 8px;"></i> Clean & Safe Site</li>
+                            </ul>
+                            <button onclick="switchPage('contact')" class="btn-hero btn-primary" style="margin: 0;">Request Free Estimate</button>
                         </div>
-                        <ul class="space-y-3 text-gray-700 mb-8 text-lg font-medium">
-                            <li class="flex items-center"><i data-lucide="check" class="text-green-800 mr-3 w-5 h-5"></i> Complete Stump Removal</li>
-                            <li class="flex items-center"><i data-lucide="check" class="text-green-800 mr-3 w-5 h-5"></i> Root Grinding</li>
-                            <li class="flex items-center"><i data-lucide="check" class="text-green-800 mr-3 w-5 h-5"></i> Underbrush Mowing</li>
-                            <li class="flex items-center"><i data-lucide="check" class="text-green-800 mr-3 w-5 h-5"></i> Clean & Safe Site</li>
-                        </ul>
-                        <button onclick="switchPage('contact')" class="w-full md:w-auto relative group overflow-hidden bg-green-800 text-white px-8 py-3 rounded-lg font-bold shadow-lg text-base uppercase tracking-wider">
-                            <span class="relative z-10">Request Free Estimate</span>
-                            <div class="absolute inset-0 bg-green-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
-                        </button>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
-
+        
         <div id="clearing-page" class="page-section">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Land Clearing Central Florida</h2>
-                    <p class="text-gray-600 text-lg">Essential preparation for construction or development.</p>
+            <section class="section-padding">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <h2 class="section-title">Land Clearing Central Florida</h2>
+                        <p class="section-subtitle">Essential preparation for construction or development.</p>
+                    </div>
+                    <div class="grid-3">
+                        <div class="card" style="cursor: default;">
+                             <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_500/v1765501622/skidsteer_pqogb3.jpg" style="width:100%; height: 200px; object-fit: cover;" alt="Skid Steer">
+                             <div class="card-body">
+                                 <h3 class="card-title" style="font-size: 1.25rem;">Site Assessment & Prep</h3>
+                                 <p class="card-text">Before starting, professionals assess the site to identify obstacles like trees, stumps, rocks, or debris.</p>
+                             </div>
+                        </div>
+                        <div class="card" style="cursor: default;">
+                             <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_500/v1765501628/wholemachine_jxgswf.webp" style="width:100%; height: 200px; object-fit: cover;" alt="Vegetation">
+                             <div class="card-body">
+                                 <h3 class="card-title" style="font-size: 1.25rem;">Vegetation Removal</h3>
+                                 <p class="card-text">Cutting down trees, shrubs, and plants that obstruct construction using specialized machinery.</p>
+                             </div>
+                        </div>
+                        <div class="card" style="cursor: default;">
+                             <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_500/v1765501615/dumptruck_puv1jh.jpg" style="width:100%; height: 200px; object-fit: cover;" alt="Debris">
+                             <div class="card-body">
+                                 <h3 class="card-title" style="font-size: 1.25rem;">Debris Removal</h3>
+                                 <p class="card-text">Removing rocks and leftover debris to ensure a clean slate for your business or home project.</p>
+                             </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-green-800">
-                        <div class="img-container w-full aspect-[4/3] rounded-lg mb-5">
-                            <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_500/v1765501622/skidsteer_pqogb3.jpg" class="w-full h-full object-cover" alt="Skid Steer clearing land" loading="lazy">
-                        </div>
-                        <h3 class="font-bold text-xl mb-3">Site Assessment & Prep</h3>
-                        <p class="text-gray-600 text-base">Before starting, professionals assess the site to identify obstacles like trees, stumps, rocks, or debris.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-green-800">
-                        <div class="img-container w-full aspect-[4/3] rounded-lg mb-5">
-                            <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_500/v1765501628/wholemachine_jxgswf.webp" class="w-full h-full object-cover" alt="Heavy Machinery for Vegetation Removal" loading="lazy">
-                        </div>
-                        <h3 class="font-bold text-xl mb-3">Vegetation Removal</h3>
-                        <p class="text-gray-600 text-base">Cutting down trees, shrubs, and plants that obstruct construction using specialized machinery.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-green-800">
-                        <div class="img-container w-full aspect-[4/3] rounded-lg mb-5">
-                            <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_500/v1765501615/dumptruck_puv1jh.jpg" class="w-full h-full object-cover" alt="Dump Truck Hauling Debris" loading="lazy">
-                        </div>
-                        <h3 class="font-bold text-xl mb-3">Debris Removal</h3>
-                        <p class="text-gray-600 text-base">Removing rocks and leftover debris to ensure a clean slate for your business or home project.</p>
-                    </div>
-                </div>
-            </div>
+            </section>
         </div>
 
         <div id="bees-page" class="page-section">
-            <div class="bg-amber-50 min-h-full py-16">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div class="text-center mb-12">
-                        <span class="bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full text-sm font-bold uppercase tracking-wide">Smitty's Beez</span>
-                        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-4 mb-3">Natural Apiary Services</h2>
-                        <p class="text-xl text-amber-900 max-w-2xl mx-auto italic">"No additives, no preservatives, just nature’s best!"</p>
+            <section class="section-padding" style="background: var(--light-amber); min-height: 80vh;">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <span style="background: #fef3c7; color: #92400e; padding: 0.25rem 0.75rem; border-radius: 99px; font-weight: 700; text-transform: uppercase; font-size: 0.875rem;">Smitty's Beez</span>
+                        <h2 class="section-title" style="margin-top: 1rem;">Natural Apiary Services</h2>
+                        <p class="section-subtitle" style="color: #92400e; font-style: italic;">"No additives, no preservatives, just nature’s best!"</p>
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                        <div class="img-container rounded-xl shadow-xl w-full aspect-[4/3] md:aspect-video border-4 border-amber-200">
-                            <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_600/v1765501616/honeysign_cni2np.webp" alt="Smitty's Beez Sign in Florida" class="w-full h-full object-cover" loading="lazy">
-                        </div>
-                        <div class="bg-white p-8 rounded-xl shadow-lg">
-                            <h3 class="text-2xl font-bold mb-6 text-amber-900">Our Products & Services</h3>
-                            <ul class="space-y-4">
-                                <li class="flex items-center border-b border-gray-100 pb-3">
-                                    <span class="text-3xl mr-4">🍯</span>
+                    
+                    <div class="grid-2">
+                        <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_600/v1765501616/honeysign_cni2np.webp" class="img-rounded" style="border: 4px solid #fde68a;" alt="Honey Sign">
+                        <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                            <h3 style="color: #92400e; font-weight: 700; font-size: 1.5rem; margin-bottom: 1.5rem;">Our Products & Services</h3>
+                            <ul style="list-style: none;">
+                                <li style="border-bottom: 1px solid #f3f4f6; padding-bottom: 1rem; margin-bottom: 1rem; display: flex;">
+                                    <span style="font-size: 2rem; margin-right: 1rem;">🍯</span>
                                     <div>
-                                        <strong class="block text-gray-900 text-lg">Raw Honey</strong>
-                                        <span class="text-gray-600 text-base">Unfiltered and unprocessed, retaining all natural benefits.</span>
+                                        <strong style="display: block; color: var(--dark);">Raw Honey</strong>
+                                        <span style="color: var(--text-muted);">Unfiltered and unprocessed, retaining all natural benefits.</span>
                                     </div>
                                 </li>
-                                <li class="flex items-center border-b border-gray-100 pb-3">
-                                    <span class="text-3xl mr-4">🕯</span>
+                                <li style="border-bottom: 1px solid #f3f4f6; padding-bottom: 1rem; margin-bottom: 1rem; display: flex;">
+                                    <span style="font-size: 2rem; margin-right: 1rem;">🕯</span>
                                     <div>
-                                        <strong class="block text-gray-900 text-lg">Beeswax Products</strong>
-                                        <span class="text-gray-600 text-base">Candles, lip balms, and more made from natural beeswax.</span>
+                                        <strong style="display: block; color: var(--dark);">Beeswax Products</strong>
+                                        <span style="color: var(--text-muted);">Candles, lip balms, and more made from natural beeswax.</span>
                                     </div>
                                 </li>
-                                <li class="flex items-center border-b border-gray-100 pb-3">
-                                    <span class="text-3xl mr-4">🌱</span>
+                                <li style="border-bottom: 1px solid #f3f4f6; padding-bottom: 1rem; margin-bottom: 1rem; display: flex;">
+                                    <span style="font-size: 2rem; margin-right: 1rem;">🌱</span>
                                     <div>
-                                        <strong class="block text-gray-900 text-lg">Pollination Services</strong>
-                                        <span class="text-gray-600 text-base">Helping local farmers improve crop yield.</span>
+                                        <strong style="display: block; color: var(--dark);">Pollination Services</strong>
+                                        <span style="color: var(--text-muted);">Helping local farmers improve crop yield.</span>
                                     </div>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
 
         <div id="gallery-page" class="page-section">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Project Gallery</h2>
-                    <p class="text-gray-600 text-lg">Click any image to view full size.</p>
-                </div>
-                
-                <div class="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
-                    <div class="break-inside-avoid">
-                        <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_400/v1765501627/stump_grinding_ytd6ps.webp" 
-                             class="w-full rounded-lg hover:opacity-90 transition cursor-pointer shadow-md" 
-                             alt="Stump Grinding Project" 
-                             onclick="openLightbox('https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_1000/v1765501627/stump_grinding_ytd6ps.webp')" 
-                             loading="lazy">
+            <section class="section-padding">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <h2 class="section-title">Project Gallery</h2>
+                        <p class="section-subtitle">Click any image to view full size.</p>
                     </div>
-                    <div class="break-inside-avoid">
-                        <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_400/v1765501615/dumptruck_puv1jh.jpg" 
-                             class="w-full rounded-lg hover:opacity-90 transition cursor-pointer shadow-md" 
-                             alt="Dump Truck Removing Debris" 
-                             onclick="openLightbox('https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_1000/v1765501615/dumptruck_puv1jh.jpg')" 
-                             loading="lazy">
-                    </div>
-                    <div class="break-inside-avoid">
-                        <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_400/v1765501616/honeysign_cni2np.webp" 
-                             class="w-full rounded-lg hover:opacity-90 transition cursor-pointer shadow-md" 
-                             alt="Local Apiary Sign" 
-                             onclick="openLightbox('https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_1000/v1765501616/honeysign_cni2np.webp')" 
-                             loading="lazy">
-                    </div>
-                    <div class="break-inside-avoid">
-                        <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_400/v1765501615/honey_kyosbc.jpg" 
-                             class="w-full rounded-lg hover:opacity-90 transition cursor-pointer shadow-md" 
-                             alt="Fresh Raw Honey" 
-                             onclick="openLightbox('https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_1000/v1765501615/honey_kyosbc.jpg')" 
-                             loading="lazy">
-                    </div>
-                    <div class="break-inside-avoid">
-                        <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_400/v1765501622/skidsteer_pqogb3.jpg" 
-                             class="w-full rounded-lg hover:opacity-90 transition cursor-pointer shadow-md" 
-                             alt="Skid Steer clearing brush" 
-                             onclick="openLightbox('https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_1000/v1765501622/skidsteer_pqogb3.jpg')" 
-                             loading="lazy">
-                    </div>
-                    <div class="break-inside-avoid">
-                        <img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_400/v1765501623/trailerandtruck_bcshmo.jpg" 
-                             class="w-full rounded-lg hover:opacity-90 transition cursor-pointer shadow-md" 
-                             alt="Work Truck and Trailer" 
-                             onclick="openLightbox('https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:good,w_1000/v1765501623/trailerandtruck_bcshmo.jpg')" 
-                             loading="lazy">
+                    <div class="gallery-grid">
+                        <div class="gallery-item"><img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_400/v1765501627/stump_grinding_ytd6ps.webp" class="gallery-img" onclick="openLightbox(this.src)" alt="Project"></div>
+                        <div class="gallery-item"><img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_400/v1765501615/dumptruck_puv1jh.jpg" class="gallery-img" onclick="openLightbox(this.src)" alt="Project"></div>
+                        <div class="gallery-item"><img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_400/v1765501616/honeysign_cni2np.webp" class="gallery-img" onclick="openLightbox(this.src)" alt="Project"></div>
+                        <div class="gallery-item"><img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_400/v1765501615/honey_kyosbc.jpg" class="gallery-img" onclick="openLightbox(this.src)" alt="Project"></div>
+                        <div class="gallery-item"><img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_400/v1765501622/skidsteer_pqogb3.jpg" class="gallery-img" onclick="openLightbox(this.src)" alt="Project"></div>
+                        <div class="gallery-item"><img src="https://res.cloudinary.com/dffo9kuhp/image/upload/f_webp,q_auto:low,w_400/v1765501623/trailerandtruck_bcshmo.jpg" class="gallery-img" onclick="openLightbox(this.src)" alt="Project"></div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
 
         <div id="contact-page" class="page-section">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <div>
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
-                        <p class="text-gray-600 mb-8 text-lg">Ready to transform your property? Contact us today for a free quote.</p>
-                        
-                        <div class="space-y-6">
-                            <div class="flex items-start">
-                                <div class="bg-white p-2.5 rounded-lg text-green-700 mr-4 shadow-sm">
-                                    <i data-lucide="map-pin" class="h-6 w-6"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-gray-900 text-lg">Service Area</h3>
-                                    <p class="text-gray-600 text-base">Clermont, Minneola, Groveland & Winter Garden.</p>
-                                </div>
-                            </div>
+            <section class="section-padding">
+                <div class="container">
+                    <div class="grid-2">
+                        <div>
+                            <h2 class="section-title">Get In Touch</h2>
+                            <p class="section-subtitle">Ready to transform your property? Contact us today for a free quote.</p>
                             
-                            <div class="flex items-start">
-                                <div class="bg-white p-2.5 rounded-lg text-green-700 mr-4 shadow-sm">
-                                    <i data-lucide="phone" class="h-6 w-6"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-gray-900 text-lg">Phone</h3>
-                                    <p class="text-gray-600 text-lg"><a href="tel:3529884401" class="hover:text-green-800">+1 (352) 988-4401</a></p>
-                                </div>
+                            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start;">
+                                <div style="background: white; padding: 0.5rem; border-radius: 0.5rem; color: var(--primary-green);"><i data-lucide="map-pin"></i></div>
+                                <div><strong style="display: block; color: var(--dark);">Service Area</strong><span style="color: var(--text-muted);">Clermont, Minneola, Groveland & Winter Garden.</span></div>
                             </div>
-
-                            <div class="flex items-start">
-                                <div class="bg-white p-2.5 rounded-lg text-green-700 mr-4 shadow-sm">
-                                    <i data-lucide="mail" class="h-6 w-6"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-gray-900 text-lg">E-mail</h3>
-                                    <p class="text-gray-600 text-lg"><a href="mailto:lilsmitty.cs@gmail.com" class="hover:text-green-800">lilsmitty.cs@gmail.com</a></p>
-                                </div>
+                            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start;">
+                                <div style="background: white; padding: 0.5rem; border-radius: 0.5rem; color: var(--primary-green);"><i data-lucide="phone"></i></div>
+                                <div><strong style="display: block; color: var(--dark);">Phone</strong><a href="tel:3529884401" style="color: var(--text-muted); text-decoration: none;">+1 (352) 988-4401</a></div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start;">
+                                <div style="background: white; padding: 0.5rem; border-radius: 0.5rem; color: var(--primary-green);"><i data-lucide="mail"></i></div>
+                                <div><strong style="display: block; color: var(--dark);">E-mail</strong><a href="mailto:lilsmitty.cs@gmail.com" style="color: var(--text-muted); text-decoration: none;">lilsmitty.cs@gmail.com</a></div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-                        <form name="contact" method="POST" data-netlify="true" netlify>
-                            <input type="hidden" name="form-name" value="contact" />
-
-                            <div class="mb-5">
-                                <label class="block text-gray-700 font-bold mb-2 text-base" for="name">Full Name</label>
-                                <input type="text" name="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-1 focus:ring-green-800 focus:outline-none transition text-base" placeholder="John Doe" required>
-                            </div>
-                            
-                            <div class="mb-5">
-                                <label class="block text-gray-700 font-bold mb-2 text-base" for="email">Email Address</label>
-                                <input type="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-1 focus:ring-green-800 focus:outline-none transition text-base" placeholder="john@example.com" required>
-                            </div>
-
-                            <div class="mb-5">
-                                <label class="block text-gray-700 font-bold mb-2 text-base" for="service">Service Needed</label>
-                                <select name="service" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-1 focus:ring-green-800 focus:outline-none transition text-base">
-                                    <option>Stump Grinding</option>
-                                    <option>Land Clearing</option>
-                                    <option>Smitty's Beez / Apiary</option>
-                                    <option>Other</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-5">
-                                <label class="block text-gray-700 font-bold mb-2 text-base" for="message">Message</label>
-                                <textarea name="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-1 focus:ring-green-800 focus:outline-none transition text-base" placeholder="Tell us about the project..."></textarea>
-                            </div>
-
-                            <button type="submit" class="w-full relative group overflow-hidden bg-green-800 text-white font-bold py-3.5 rounded-lg shadow-lg text-lg uppercase tracking-wider">
-                                <span class="relative z-10">Send Message</span>
-                                <div class="absolute inset-0 bg-green-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
-                            </button>
-                        </form>
+                        <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);">
+                            <form name="contact" method="POST" data-netlify="true" netlify>
+                                <input type="hidden" name="form-name" value="contact" />
+                                <div class="form-group">
+                                    <label class="form-label" for="name">Full Name</label>
+                                    <input type="text" name="name" class="form-input" placeholder="John Doe" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="email">Email Address</label>
+                                    <input type="email" name="email" class="form-input" placeholder="john@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="service">Service Needed</label>
+                                    <select name="service" class="form-input" style="background: white;">
+                                        <option>Stump Grinding</option>
+                                        <option>Land Clearing</option>
+                                        <option>Smitty's Beez / Apiary</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="message">Message</label>
+                                    <textarea name="message" rows="4" class="form-input" placeholder="Tell us about the project..."></textarea>
+                                </div>
+                                <button type="submit" class="btn-hero btn-primary btn-submit">Send Message</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
 
     </main>
 
-    <footer class="bg-gray-900 text-gray-400 py-6 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-4 text-sm">
-                 <div class="col-span-1 md:col-span-2">
-                     <span class="font-bold text-2xl text-white">LIL SMITTY'S</span>
-                     <p class="mt-3 text-gray-300 max-w-sm text-base">Building and maintaining the outdoor lifestyle you deserve.</p>
-                 </div>
-                 
-                 <div>
-                     <h3 class="text-white font-bold mb-4 text-lg">Service Areas</h3>
-                     <ul class="space-y-2 text-sm">
+    <footer class="footer">
+        <div class="container">
+            <div class="grid-3" style="margin-bottom: 2rem;">
+                <div>
+                    <h3 style="font-size: 1.5rem; color: white;">LIL SMITTY'S</h3>
+                    <p>Building and maintaining the outdoor lifestyle you deserve.</p>
+                </div>
+                <div>
+                    <h3>Service Areas</h3>
+                    <ul>
                         <li>Clermont, FL</li>
                         <li>Minneola, FL</li>
                         <li>Groveland, FL</li>
@@ -715,84 +732,47 @@
                         <li>Winter Garden, FL</li>
                         <li>Oakland, FL</li>
                         <li>Orlando, FL</li>
-                      </ul>
-                 </div>
-
-                 <div>
-                     <h3 class="text-white font-bold mb-4 text-lg">Contact</h3>
-                     <ul class="space-y-3 text-base">
+                    </ul>
+                </div>
+                <div>
+                    <h3>Contact</h3>
+                    <ul>
                         <li>(352) 988-4401</li>
                         <li>lilsmitty.cs@gmail.com</li>
-                        <li class="text-green-500 font-bold">Licensed & Insured</li>
-                      </ul>
-                 </div>
+                        <li style="color: var(--accent-green); font-weight: 700;">Licensed & Insured</li>
+                    </ul>
+                </div>
             </div>
-            
-            <div class="border-t border-gray-800 pt-4 flex flex-col md:flex-row justify-between items-center text-sm">
-                <p>&copy; 2025 Lil Smitty's Services, LLC.</p>
+            <div class="footer-bottom">
+                &copy; 2025 Lil Smitty's Services, LLC.
             </div>
         </div>
     </footer>
 
     <div id="lightbox" onclick="closeLightbox()">
         <span id="lightbox-close">&times;</span>
-        <img id="lightbox-img" src="" alt="Full Screen Image">
+        <img id="lightbox-img" src="" alt="Full Screen">
     </div>
 
     <script>
-        // 1. Reveal Site (Fixes FOUC/Junk Load)
-        document.addEventListener('DOMContentLoaded', () => {
-            // Wait a split second to ensure Tailwind has processed, then reveal
-            setTimeout(() => {
-                document.body.classList.add('loaded');
-            }, 100);
-
-            // Initialize Icons
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-            
-            // Handle URL Parameters (SEO Fix)
-            const params = new URLSearchParams(window.location.search);
-            const page = params.get('page');
-            if (page) {
-                switchPage(page, false); 
-            }
-        });
-
-        // 2. Comparison Slider Logic
-        document.querySelectorAll('.comparison-container').forEach(container => {
-            const overlay = container.querySelector('.img-top');
-            const handle = container.querySelector('.slider-handle');
-            let active = false;
-
-            const updateSlider = (x) => {
-                const rect = container.getBoundingClientRect();
-                let val = ((x - rect.left) / rect.width) * 100;
-                val = Math.max(0, Math.min(100, val));
-                
-                if (overlay && handle) {
-                    overlay.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
-                    handle.style.left = `${val}%`;
-                }
-            };
-
-            container.addEventListener('mousedown', (e) => { active = true; updateSlider(e.clientX); });
-            window.addEventListener('mousemove', (e) => { if (active) updateSlider(e.clientX); });
-            window.addEventListener('mouseup', () => { active = false; });
-            
-            // Mobile Touch Support
-            container.addEventListener('touchstart', (e) => { active = true; updateSlider(e.touches[0].clientX); }, { passive: true });
-            container.addEventListener('touchmove', (e) => { if (active) updateSlider(e.touches[0].clientX); }, { passive: true });
-            container.addEventListener('touchend', () => { active = false; });
-        });
-
-        // 3. Mobile Menu Toggle
+        // 1. Mobile Menu Toggle
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
         btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
+            menu.classList.toggle('open');
         });
 
-        // 4. Improved Page Switcher
+        // 2. Initialize Icons
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            
+            // Check URL params for page
+            const params = new URLSearchParams(window.location.search);
+            const page = params.get('page');
+            if (page) switchPage(page, false);
+        });
+
+        // 3. Page Switcher
         const pageTitles = {
             'home': "Lil Smitty's Services | Stump Grinding & Land Clearing",
             'about': "About Us | Lil Smitty's Services",
@@ -804,54 +784,81 @@
         };
 
         function switchPage(pageName, updateHistory = true) {
-            // Hide all pages
-            document.querySelectorAll('.page-section').forEach(page => {
-                page.classList.remove('active');
-            });
-
-            // Show target page
+            document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active'));
             const target = document.getElementById(pageName + '-page');
             if (target) {
                 target.classList.add('active');
-                window.scrollTo(0, 0); 
-                
-                if (pageTitles[pageName]) {
-                    document.title = pageTitles[pageName];
-                }
-
+                window.scrollTo(0, 0);
+                if (pageTitles[pageName]) document.title = pageTitles[pageName];
                 if (updateHistory) {
                     try {
                         const newUrl = pageName === 'home' ? '/' : `?page=${pageName}`;
                         history.pushState({page: pageName}, '', newUrl);
-                    } catch (e) {
-                        console.log("History API error:", e);
-                    }
+                    } catch (e) { console.log(e); }
                 }
             } else {
                 document.getElementById('home-page').classList.add('active');
             }
-            menu.classList.add('hidden');
+            menu.classList.remove('open');
         }
 
         window.onpopstate = function(event) {
-            if (event.state && event.state.page) {
-                switchPage(event.state.page, false);
-            } else {
-                switchPage('home', false);
-            }
+            if (event.state && event.state.page) switchPage(event.state.page, false);
+            else switchPage('home', false);
         };
 
-        // Lightbox Logic
-        function openLightbox(src) {
-            const lightbox = document.getElementById('lightbox');
-            const img = document.getElementById('lightbox-img');
-            img.src = src;
-            lightbox.classList.add('active');
-        }
+        // 4. Comparison Sliders (FIXED: Prevent native image dragging)
+        document.querySelectorAll('.comparison-container').forEach(container => {
+            const overlay = container.querySelector('.img-top');
+            const handle = container.querySelector('.slider-handle');
+            let active = false;
 
+            const updateSlider = (x) => {
+                const rect = container.getBoundingClientRect();
+                let val = ((x - rect.left) / rect.width) * 100;
+                val = Math.max(0, Math.min(100, val));
+                if (overlay && handle) {
+                    overlay.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+                    handle.style.left = `${val}%`;
+                }
+            };
+            
+            // Mouse Events
+            container.addEventListener('mousedown', (e) => { 
+                e.preventDefault(); 
+                active = true; 
+                updateSlider(e.clientX); 
+            });
+            window.addEventListener('mousemove', (e) => { 
+                if (active) updateSlider(e.clientX); 
+            });
+            window.addEventListener('mouseup', () => { 
+                active = false; 
+            });
+
+            // Touch Events
+            container.addEventListener('touchstart', (e) => { 
+                active = true; 
+                updateSlider(e.touches[0].clientX); 
+            }, { passive: true });
+            
+            container.addEventListener('touchmove', (e) => { 
+                if (active) updateSlider(e.touches[0].clientX); 
+            }, { passive: true });
+            
+            container.addEventListener('touchend', () => { 
+                active = false; 
+            });
+        });
+
+        // 5. Lightbox
+        function openLightbox(src) {
+            const hqSrc = src.replace('w_400', 'w_1000');
+            document.getElementById('lightbox-img').src = hqSrc;
+            document.getElementById('lightbox').classList.add('active');
+        }
         function closeLightbox() {
             document.getElementById('lightbox').classList.remove('active');
-            document.getElementById('lightbox-img').src = '';
         }
     </script>
 </body>
